@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#153e39">
+    <meta name="description" content="Explore positioning statistics and signal fingerprints.">
+    <title>Analytics | WiFi Room</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./theme.css">
+    <script src="./theme.js"></script>
+    <script src="./main.js" defer>
+    </script>
+  </head>
+  <body class="workspace-page">
+    <svg class="svg-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <symbol id="i-wifi" viewBox="0 0 24 24">
+          <path d="M3 8a15 15 0 0 1 18 0M6 12a10 10 0 0 1 12 0M9 16a5 5 0 0 1 6 0" />
+          <circle cx="12" cy="20" r="1" />
+        </symbol>
+      </defs>
+    </svg>
+    <header class="top-navbar">
+      <a class="skip-link" href="#main-content">Skip to main content</a>
+      <div class="nav-left">
+        <a class="brand" href="index.html" aria-label="WiFi Room dashboard">
+          <span class="brand-mark" aria-hidden="true">
+            <svg>
+              <use href="#i-wifi" />
+            </svg>
+          </span>
+          <span>WiFi Room</span>
+        </a>
+        <button class="menu-toggle" type="button" aria-controls="primary-navigation" aria-expanded="false" >Menu</button>
+        <nav id="primary-navigation" aria-label="Main navigation">
+          <ul class="menu-links">
+            <li>
+              <a href="index.html">Dashboard</a>
+            </li>
+            <li>
+              <a href="area.html">Areas &amp; APs</a>
+            </li>
+            <li>
+              <a href="survey.html">Surveys</a>
+            </li>
+            <li>
+              <a href="sessions.html">Sessions</a>
+            </li>
+            <li>
+              <a href="analytics.html" class="active" aria-current="page">Analytics</a>
+            </li>
+            <li><a href="admin.html">Admin</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="nav-right">
+        <div class="theme-control" hidden>
+          <label for="theme-mode">Appearance</label>
+          <select id="theme-mode" data-styled-dropdown aria-label="Color theme">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="system" selected>System</option>
+          </select>
+        </div>
+        <span class="demo-badge">Demo workspace</span>
+        <div class="user-info">
+          <span class="user-name">Demo Administrator</span>
+          <span class="user-role">ADMIN</span>
+        </div>
+        <a id="logout-btn" class="logout-button" href="login.html">Log out</a>
+      </div>
+    </header>
+    <main id="main-content" class="container" tabindex="-1">
+      <header class="page-header">
+        <h1>Positioning analytics</h1>
+        <button type="button" disabled title="Static preview; no file is exported.">Export filtered CSV</button>
+      </header>
+      <p class="data-note">
+        <span class="demo-badge">Demo data</span> Static preview. Filters, save, delete, export and collection actions do not change data.</p>
+      <section class="analysis-filters" aria-labelledby="analysis-filters-heading">
+        <h2 id="analysis-filters-heading">Analysis scope</h2>
+        <form id="analysis-filters">
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="analysis-source">Data source</label>
+              <select id="analysis-source" name="analysis-source" data-styled-dropdown>
+                <option>DEVICE</option>
+                <option selected>SYNTHETIC</option>
+                <option>UCI</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="analysis-survey">Map scope</label>
+              <select data-styled-dropdown id="analysis-survey" name="analysis-survey" >
+                <option>Current map</option>
+                <option>All maps</option>
+                <option selected>SURVEY_01</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit">Apply scope</button>
+        </form>
+        <p class="data-note">Fixed SYNTHETIC / SURVEY_01 example. Changing controls does not recompute these values.</p>
+      </section>
+      <p class="scope-note">Training, LIVE, missing-signal and excluded sessions do not count toward accuracy.</p>
+      <p class="demo-note data-note">This source is not a hardware measurement from your group.</p>
+      <section class="accuracy-summary" aria-labelledby="accuracy-heading">
+        <h2 id="accuracy-heading">Accuracy overview</h2>
+        <div class="metric-grid">
+          <article>
+            <h3>Overall accuracy</h3>
+            <p class="kpi-value">90%</p>
+          </article>
+          <article>
+            <h3>Eligible sessions</h3>
+            <p class="kpi-value">20</p>
+          </article>
+          <article>
+            <h3>Correct predictions</h3>
+            <p class="kpi-value">18</p>
+          </article>
+          <article>
+            <h3>Excluded sessions</h3>
+            <p class="kpi-value">1</p>
+          </article>
+        </div>
+        <p class="data-note">120 synthetic sessions: 96 training, 20 eligible, 2 missing-signal, 1 LIVE and 1 excluded. Accuracy uses machine predictions, not reviewed labels.</p>
+        <!-- Mẫu không có mẫu hợp lệ: thay giá trị accuracy bằng Not evaluated; không dùng 0%. -->
+        <p class="empty-state" hidden>Not evaluated — no eligible sessions in this scope.</p>
+      </section>
+      <section class="condition-comparison" aria-labelledby="conditions-heading">
+        <h2 id="conditions-heading">Accuracy by condition</h2>
+        <div class="table-scroll" role="region" tabindex="0" aria-label="Four-condition comparison">
+          <table class="data-table">
+            <caption>Four-condition comparison — Demo data</caption>
+            <thead>
+              <tr>
+                <th scope="col">Condition</th>
+                <th scope="col">Eligible sessions</th>
+                <th scope="col">Correct</th>
+                <th scope="col">Accuracy</th>
+                <th scope="col">Change from immediate</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">IMMEDIATE</th>
+                <td>10</td>
+                <td>9</td>
+                <td>90%</td>
+                <td>0 pp</td>
+              </tr>
+              <tr>
+                <th scope="row">AFTER_3H</th>
+                <td>4</td>
+                <td>4</td>
+                <td>100%</td>
+                <td>+10 pp</td>
+              </tr>
+              <tr>
+                <th scope="row">AP_MOVED</th>
+                <td>4</td>
+                <td>3</td>
+                <td>75%</td>
+                <td>−15 pp</td>
+              </tr>
+              <tr>
+                <th scope="row">CROWDED</th>
+                <td>2</td>
+                <td>2</td>
+                <td>100%</td>
+                <td>+10 pp</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <figure class="chart-figure">
+          <div class="canvas-container">
+            <canvas id="condition-chart" width="960" height="320" role="img" aria-label="Accuracy by condition" aria-describedby="condition-chart-summary">Use the chart data table below.</canvas>
+            <p class="chart-placeholder" aria-hidden="true">Chart preview<br>Data table available below.</p>
+          </div>
+          <figcaption id="condition-chart-summary">Demo data. Horizontal axis: condition. Vertical axis: accuracy (%), 0–100. IMMEDIATE is the 90% baseline. Canvas drawing is not implemented in this static preview.</figcaption>
+          <details class="chart-data">
+            <summary>View chart data</summary>
+            <div class="table-scroll" role="region" tabindex="0" aria-label="Accuracy by condition">
+              <table class="data-table">
+                <caption>Accuracy by condition — Demo data</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Condition</th>
+                    <th scope="col">Eligible sessions</th>
+                    <th scope="col">Correct</th>
+                    <th scope="col">Accuracy</th>
+                    <th scope="col">Change from immediate</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">IMMEDIATE</th>
+                    <td>10</td>
+                    <td>9</td>
+                    <td>90%</td>
+                    <td>0 pp</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">AFTER_3H</th>
+                    <td>4</td>
+                    <td>4</td>
+                    <td>100%</td>
+                    <td>+10 pp</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">AP_MOVED</th>
+                    <td>4</td>
+                    <td>3</td>
+                    <td>75%</td>
+                    <td>−15 pp</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">CROWDED</th>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>100%</td>
+                    <td>+10 pp</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
+        </figure>
+        <p>Changes use percentage points. Missing conditions are Not measured.</p>
+        <!-- Mẫu UCI: ẩn bảng và figure; chỉ hiện thông báo not-applicable. -->
+        <p class="empty-state" hidden>Not applicable — UCI has no four-condition device experiment. Use the holdout result below.</p>
+        <p class="empty-state" hidden>Not measured — no readings for this condition.</p>
+      </section>
+      <section class="confusion-matrix" aria-labelledby="matrix-heading">
+        <h2 id="matrix-heading">Actual room vs. machine prediction</h2>
+        <div class="table-scroll" role="region" tabindex="0" aria-label="Confusion matrix">
+          <table class="data-table">
+            <caption>Confusion matrix — Demo data</caption>
+            <thead>
+              <tr>
+                <th scope="col">Actual / Predicted</th>
+                <th scope="col">ROOM_1</th>
+                <th scope="col">ROOM_2</th>
+                <th scope="col">ROOM_3</th>
+                <th scope="col">ROOM_4</th>
+                <th scope="col">BORDER</th>
+                <th scope="col">Evaluated</th>
+                <th scope="col">Room accuracy</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">ROOM_1</th>
+                <td>5</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>6</td>
+                <td>83.3%</td>
+              </tr>
+              <tr>
+                <th scope="row">ROOM_2</th>
+                <td>0</td>
+                <td>4</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>4</td>
+                <td>100%</td>
+              </tr>
+              <tr>
+                <th scope="row">ROOM_3</th>
+                <td>0</td>
+                <td>0</td>
+                <td>4</td>
+                <td>0</td>
+                <td>1</td>
+                <td>5</td>
+                <td>80%</td>
+              </tr>
+              <tr>
+                <th scope="row">ROOM_4</th>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>5</td>
+                <td>0</td>
+                <td>5</td>
+                <td>100%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>BORDER is not a correct room prediction. AP_LOST is reported separately.</p>
+        <p class="data-note">Rows are actual rooms; columns are machine predictions. Total: 20 evaluated, 18 correct. Room accuracy uses that row’s evaluated count.</p>
+      </section>
+      <section class="fingerprint-stats" aria-labelledby="fingerprint-heading">
+        <h2 id="fingerprint-heading">Room fingerprints</h2>
+        <p>Survey readings only. Values closer to zero mean a stronger signal.</p>
+        <p class="data-note">Demo map: SURVEY_01. Mean ± sample standard deviation; missing RSSI values are excluded.</p>
+        <div class="table-scroll" role="region" tabindex="0" aria-label="Mean RSSI and sample standard deviation">
+          <table class="data-table">
+            <caption>Mean RSSI and sample standard deviation — Demo data</caption>
+            <thead>
+              <tr>
+                <th scope="col">Room</th>
+                <th scope="col">Survey samples</th>
+                <th scope="col">AP 1 mean ± SD (dBm)</th>
+                <th scope="col">AP 2 mean ± SD (dBm)</th>
+                <th scope="col">AP 3 mean ± SD (dBm)</th>
+                <th scope="col">AP 4 mean ± SD (dBm)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">ROOM_1</th>
+                <td>24</td>
+                <td>−50 ± 3</td>
+                <td>−60 ± 4</td>
+                <td>−70 ± 4</td>
+                <td>−80 ± 5</td>
+              </tr>
+              <tr>
+                <th scope="row">ROOM_2</th>
+                <td>24</td>
+                <td>−62 ± 4</td>
+                <td>−49 ± 3</td>
+                <td>−75 ± 5</td>
+                <td>−68 ± 4</td>
+              </tr>
+              <tr>
+                <th scope="row">ROOM_3</th>
+                <td>24</td>
+                <td>−71 ± 4</td>
+                <td>−76 ± 5</td>
+                <td>−48 ± 3</td>
+                <td>−60 ± 4</td>
+              </tr>
+              <tr>
+                <th scope="row">ROOM_4</th>
+                <td>24</td>
+                <td>−80 ± 5</td>
+                <td>−69 ± 4</td>
+                <td>−61 ± 4</td>
+                <td>−51 ± 3</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <figure class="chart-figure">
+          <div class="canvas-container">
+            <canvas id="fingerprint-chart" width="960" height="320" role="img" aria-label="Room-by-AP mean RSSI" aria-describedby="fingerprint-chart-summary">Use the chart data table below.</canvas>
+            <p class="chart-placeholder" aria-hidden="true">Chart preview<br>Data table available below.</p>
+          </div>
+          <figcaption id="fingerprint-chart-summary">Demo data. Horizontal axis: room, with one series per AP. Vertical axis: mean RSSI (dBm). Table values include sample standard deviation. Canvas drawing is not implemented in this static preview.</figcaption>
+          <details class="chart-data">
+            <summary>View chart data</summary>
+            <div class="table-scroll" role="region" tabindex="0" aria-label="Room-by-AP mean RSSI">
+              <table class="data-table">
+                <caption>Room-by-AP mean RSSI — Demo data</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Room</th>
+                    <th scope="col">Survey samples</th>
+                    <th scope="col">AP 1 mean ± SD (dBm)</th>
+                    <th scope="col">AP 2 mean ± SD (dBm)</th>
+                    <th scope="col">AP 3 mean ± SD (dBm)</th>
+                    <th scope="col">AP 4 mean ± SD (dBm)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">ROOM_1</th>
+                    <td>24</td>
+                    <td>−50 ± 3</td>
+                    <td>−60 ± 4</td>
+                    <td>−70 ± 4</td>
+                    <td>−80 ± 5</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">ROOM_2</th>
+                    <td>24</td>
+                    <td>−62 ± 4</td>
+                    <td>−49 ± 3</td>
+                    <td>−75 ± 5</td>
+                    <td>−68 ± 4</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">ROOM_3</th>
+                    <td>24</td>
+                    <td>−71 ± 4</td>
+                    <td>−76 ± 5</td>
+                    <td>−48 ± 3</td>
+                    <td>−60 ± 4</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">ROOM_4</th>
+                    <td>24</td>
+                    <td>−80 ± 5</td>
+                    <td>−69 ± 4</td>
+                    <td>−61 ± 4</td>
+                    <td>−51 ± 3</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
+        </figure>
+        <p class="thin-survey-note">Fewer than 50 valid survey readings in this room. Each demo room has only 24 valid readings; interpret these fingerprints cautiously.</p>
+        <!-- Mẫu All maps: ẩn bảng, figure và thin-survey-note; chỉ hiện yêu cầu chọn một map. -->
+        <p class="empty-state" hidden>Select one map to view fingerprints. Fingerprints from different maps cannot be pooled.</p>
+        <p class="empty-state" hidden>No survey readings available. Fingerprints are Not measured.</p>
+      </section>
+      <section class="label-distribution" aria-labelledby="distribution-heading">
+        <h2 id="distribution-heading">Machine label distribution</h2>
+        <figure class="chart-figure">
+          <div class="canvas-container">
+            <canvas id="label-chart" width="960" height="320" role="img" aria-label="Machine label counts" aria-describedby="label-chart-summary">Use the chart data table below.</canvas>
+            <p class="chart-placeholder" aria-hidden="true">Chart preview<br>Data table available below.</p>
+          </div>
+          <figcaption id="label-chart-summary">Demo data. Horizontal axis: six machine labels. Vertical axis: session count. All 120 sessions in scope are included in this distribution; accuracy uses only the eligible subset. Canvas drawing is not implemented in this static preview.</figcaption>
+          <details class="chart-data">
+            <summary>View chart data</summary>
+            <div class="table-scroll" role="region" tabindex="0" aria-label="Machine label counts">
+              <table class="data-table">
+                <caption>Machine label counts — Demo data</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Machine label</th>
+                    <th scope="col">Sessions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">ROOM_1</th>
+                    <td>31</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">ROOM_2</th>
+                    <td>29</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">ROOM_3</th>
+                    <td>28</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">ROOM_4</th>
+                    <td>29</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">BORDER</th>
+                    <td>1</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">AP_LOST</th>
+                    <td>2</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
+        </figure>
+        <dl class="record-details">
+          <dt>All sessions in scope</dt>
+          <dd>120</dd>
+          <dt>BORDER count and percentage</dt>
+          <dd>1 / 120 · 0.83%</dd>
+          <dt>AP_LOST count and percentage</dt>
+          <dd>2 / 120 · 1.67%</dd>
+        </dl>
+      </section>
+      <!-- Mẫu DEVICE: chỉ bỏ hidden khi trình bày nguồn DEVICE; không suy ra độ trễ từ SYNTHETIC/UCI. -->
+      <section class="review-transport" aria-labelledby="quality-heading" hidden>
+        <h2 id="quality-heading">Review and delivery quality</h2>
+        <p>DEVICE only. No device readings are available.</p>
+        <dl class="record-details">
+          <dt>Reviewed sessions</dt>
+          <dd>Not measured</dd>
+          <dt>Review percentage</dt>
+          <dd>Not measured</dd>
+          <dt>Delayed arrivals</dt>
+          <dd>Not measured</dd>
+          <dt>Mean delay</dt>
+          <dd>Not measured (ms)</dd>
+          <dt>Maximum delay</dt>
+          <dd>Not measured (ms)</dd>
+        </dl>
+      </section>
+      <section class="baseline-comparison" aria-labelledby="baseline-heading">
+        <h2 id="baseline-heading">UCI baseline and device results</h2>
+        <p>UCI 422 · Columns 1–4 · Seed 301 · 1,400 training / 600 test samples</p>
+        <div class="table-scroll" role="region" tabindex="0" aria-label="Baseline comparison">
+          <table class="data-table">
+            <caption>Baseline comparison — Demo data</caption>
+            <thead>
+              <tr>
+                <th scope="col">Dataset</th>
+                <th scope="col">Training samples</th>
+                <th scope="col">Test samples</th>
+                <th scope="col">Accuracy</th>
+                <th scope="col">Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">UCI holdout</th>
+                <td>1,400 planned</td>
+                <td>600 planned</td>
+                <td>Not evaluated</td>
+                <td>Protocol only; no model has been evaluated in this layout.</td>
+              </tr>
+              <tr>
+                <th scope="row">Device experiment</th>
+                <td>0</td>
+                <td>0</td>
+                <td>Not evaluated</td>
+                <td>No group hardware results collected. Synthetic examples are excluded.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Dataset and environment differences limit direct comparison.</p>
+      </section>
+      <section class="experiment-progress" aria-labelledby="progress-heading">
+        <h2 id="progress-heading">Real-data collection progress</h2>
+        <div class="table-scroll" role="region" tabindex="0" aria-label="Required experiment sessions">
+          <table class="data-table">
+            <caption>Required experiment sessions — Demo data</caption>
+            <thead>
+              <tr>
+                <th scope="col">Condition</th>
+                <th scope="col">Collected</th>
+                <th scope="col">Required</th>
+                <th scope="col">State</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">SURVEY</th>
+                <td>0</td>
+                <td>400</td>
+                <td>Not started</td>
+              </tr>
+              <tr>
+                <th scope="row">IMMEDIATE</th>
+                <td>0</td>
+                <td>200</td>
+                <td>Not started</td>
+              </tr>
+              <tr>
+                <th scope="row">BORDER</th>
+                <td>0</td>
+                <td>80</td>
+                <td>Not started</td>
+              </tr>
+              <tr>
+                <th scope="row">AFTER_3H</th>
+                <td>0</td>
+                <td>150</td>
+                <td>Not started</td>
+              </tr>
+              <tr>
+                <th scope="row">AP_MOVED</th>
+                <td>0</td>
+                <td>120</td>
+                <td>Not started</td>
+              </tr>
+              <tr>
+                <th scope="row">CROWDED</th>
+                <td>0</td>
+                <td>120</td>
+                <td>Not started</td>
+              </tr>
+              <tr>
+                <th scope="row">AP_LOST</th>
+                <td>0</td>
+                <td>60</td>
+                <td>Not started</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="data-note">Total required: 1,130 device sessions. Collected: 0. Synthetic and UCI examples do not count.</p>
+        <p>Counts alone do not confirm elapsed time, AP placement or experimental conditions.</p>
+      </section>
+      <!-- Mẫu trang không có dữ liệu: ẩn các section kết quả trước khi bỏ hidden. -->
+      <div class="empty-state" hidden>
+        <h2>No data in this scope</h2>
+        <p>Accuracy is Not evaluated. Select a source and map with eligible readings.</p>
+      </div>
+    </main>
+    <div class="toast-region" role="status" aria-live="polite" aria-atomic="true">
+      <!-- Bỏ hidden để kiểm tra mẫu thông báo. -->
+      <div class="toast" hidden>
+        <p>Changes saved.</p>
+        <button type="button" data-dismiss-feedback aria-label="Dismiss notification">Dismiss</button>
+      </div>
+    </div>
+    <div class="page-error" role="alert" hidden>
+      <p>This content could not be loaded.</p>
+      <button type="button" disabled>Try again</button>
+    </div>
+  </body>
+</html>

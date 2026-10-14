@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#153e39">
+    <meta name="description" content="Configure room geometry and positioning access points.">
+    <title>Areas &amp; APs | WiFi Room</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./theme.css">
+    <script src="./theme.js"></script>
+    <script src="./main.js" defer>
+    </script>
+  </head>
+  <body class="workspace-page">
+    <svg class="svg-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <symbol id="i-wifi" viewBox="0 0 24 24">
+          <path d="M3 8a15 15 0 0 1 18 0M6 12a10 10 0 0 1 12 0M9 16a5 5 0 0 1 6 0" />
+          <circle cx="12" cy="20" r="1" />
+        </symbol>
+      </defs>
+    </svg>
+    <header class="top-navbar">
+      <a class="skip-link" href="#main-content">Skip to main content</a>
+      <div class="nav-left">
+        <a class="brand" href="index.html" aria-label="WiFi Room dashboard">
+          <span class="brand-mark" aria-hidden="true">
+            <svg>
+              <use href="#i-wifi" />
+            </svg>
+          </span>
+          <span>WiFi Room</span>
+        </a>
+        <button class="menu-toggle" type="button" aria-controls="primary-navigation" aria-expanded="false" >Menu</button>
+        <nav id="primary-navigation" aria-label="Main navigation">
+          <ul class="menu-links">
+            <li>
+              <a href="index.html">Dashboard</a>
+            </li>
+            <li>
+              <a href="area.html" class="active" aria-current="page">Areas &amp; APs</a>
+            </li>
+            <li>
+              <a href="survey.html">Surveys</a>
+            </li>
+            <li>
+              <a href="sessions.html">Sessions</a>
+            </li>
+            <li>
+              <a href="analytics.html">Analytics</a>
+            </li>
+            <li><a href="admin.html">Admin</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="nav-right">
+        <div class="theme-control" hidden>
+          <label for="theme-mode">Appearance</label>
+          <select id="theme-mode" data-styled-dropdown aria-label="Color theme">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="system" selected>System</option>
+          </select>
+        </div>
+        <span class="demo-badge">Demo workspace</span>
+        <div class="user-info">
+          <span class="user-name">Demo Administrator</span>
+          <span class="user-role">ADMIN</span>
+        </div>
+        <a id="logout-btn" class="logout-button" href="login.html">Log out</a>
+      </div>
+    </header>
+    <main id="main-content" class="container" tabindex="-1">
+      <header class="page-header">
+        <div>
+          <h1>Areas &amp; access points</h1>
+          <p>Configure room geometry and the four positioning access points.</p>
+        </div>
+      </header>
+      <p class="data-note">
+        <span class="demo-badge">Demo data</span> Static preview. Filters, save, delete, export and collection actions do not change data.</p>
+      <!-- Mẫu REVIEWER/VIEWER: hiện thông báo này và vô hiệu hóa các nút thêm/sửa/xóa. -->
+      <p class="role-notice empty-state" hidden>Read-only access. Only ADMIN, MAP_MANAGER and SURVEYOR can manage areas and access points.</p>
+      <section class="area-list" aria-labelledby="areas-heading">
+        <header class="section-header">
+          <h2 id="areas-heading">Areas</h2>
+          <button type="button" data-open-dialog="area-editor" data-editor-mode="add" data-dialog-title="Add area">Add area</button>
+        </header>
+        <form class="area-filters" role="search" aria-label="Search areas">
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="area-query">Search areas</label>
+              <input id="area-query" name="area-query" type="search" >
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit">Search</button>
+            <button type="reset">Clear</button>
+          </div>
+        </form>
+        <div class="area-grid">
+          <article class="area-card">
+            <h3>ROOM_1 · Room 1</h3>
+            <dl class="record-details">
+              <dt>Code</dt>
+              <dd>ROOM_1</dd>
+              <dt>Name</dt>
+              <dd>Room 1</dd>
+              <dt>Width × Height</dt>
+              <dd>6 × 4 m</dd>
+              <dt>X, Y</dt>
+              <dd>0, 0 m</dd>
+              <dt>Notes</dt>
+              <dd>Illustrative room geometry</dd>
+            </dl>
+            <p>APs physically placed here: AP_01</p>
+            <div class="card-actions">
+              <button type="button" data-open-dialog="area-editor" data-dialog-title="Edit area" data-preview-values="{&quot;area-code&quot;:&quot;ROOM_1&quot;,&quot;area-name&quot;:&quot;Room 1&quot;,&quot;area-x&quot;:0,&quot;area-y&quot;:0,&quot;area-width&quot;:6,&quot;area-height&quot;:4,&quot;area-notes&quot;:&quot;Illustrative room geometry&quot;}" aria-label="Edit ROOM_1">Edit area</button>
+              <button type="button" data-open-dialog="delete-dialog" data-record="ROOM_1" data-record-name="Room 1" data-record-kind="area" class="danger" aria-label="Delete ROOM_1">Delete area</button>
+            </div>
+          </article>
+          <article class="area-card">
+            <h3>ROOM_2 · Room 2</h3>
+            <dl class="record-details">
+              <dt>Code</dt>
+              <dd>ROOM_2</dd>
+              <dt>Name</dt>
+              <dd>Room 2</dd>
+              <dt>Width × Height</dt>
+              <dd>6 × 4 m</dd>
+              <dt>X, Y</dt>
+              <dd>6, 0 m</dd>
+              <dt>Notes</dt>
+              <dd>Illustrative room geometry</dd>
+            </dl>
+            <p>APs physically placed here: AP_02</p>
+            <div class="card-actions">
+              <button type="button" data-open-dialog="area-editor" data-dialog-title="Edit area" data-preview-values="{&quot;area-code&quot;:&quot;ROOM_2&quot;,&quot;area-name&quot;:&quot;Room 2&quot;,&quot;area-x&quot;:6,&quot;area-y&quot;:0,&quot;area-width&quot;:6,&quot;area-height&quot;:4,&quot;area-notes&quot;:&quot;Illustrative room geometry&quot;}" aria-label="Edit ROOM_2">Edit area</button>
+              <button type="button" data-open-dialog="delete-dialog" data-record="ROOM_2" data-record-name="Room 2" data-record-kind="area" class="danger" aria-label="Delete ROOM_2">Delete area</button>
+            </div>
+          </article>
+          <article class="area-card">
+            <h3>ROOM_3 · Room 3</h3>
+            <dl class="record-details">
+              <dt>Code</dt>
+              <dd>ROOM_3</dd>
+              <dt>Name</dt>
+              <dd>Room 3</dd>
+              <dt>Width × Height</dt>
+              <dd>6 × 4 m</dd>
+              <dt>X, Y</dt>
+              <dd>0, 4 m</dd>
+              <dt>Notes</dt>
+              <dd>Illustrative room geometry</dd>
+            </dl>
+            <p>APs physically placed here: AP_03</p>
+            <div class="card-actions">
+              <button type="button" data-open-dialog="area-editor" data-dialog-title="Edit area" data-preview-values="{&quot;area-code&quot;:&quot;ROOM_3&quot;,&quot;area-name&quot;:&quot;Room 3&quot;,&quot;area-x&quot;:0,&quot;area-y&quot;:4,&quot;area-width&quot;:6,&quot;area-height&quot;:4,&quot;area-notes&quot;:&quot;Illustrative room geometry&quot;}" aria-label="Edit ROOM_3">Edit area</button>
+              <button type="button" data-open-dialog="delete-dialog" data-record="ROOM_3" data-record-name="Room 3" data-record-kind="area" class="danger" aria-label="Delete ROOM_3">Delete area</button>
+            </div>
+          </article>
+          <article class="area-card">
+            <h3>ROOM_4 · Room 4</h3>
+            <dl class="record-details">
+              <dt>Code</dt>
+              <dd>ROOM_4</dd>
+              <dt>Name</dt>
+              <dd>Room 4</dd>
+              <dt>Width × Height</dt>
+              <dd>6 × 4 m</dd>
+              <dt>X, Y</dt>
+              <dd>6, 4 m</dd>
+              <dt>Notes</dt>
+              <dd>Illustrative room geometry</dd>
+            </dl>
+            <p>APs physically placed here: AP_04</p>
+            <div class="card-actions">
+              <button type="button" data-open-dialog="area-editor" data-dialog-title="Edit area" data-preview-values="{&quot;area-code&quot;:&quot;ROOM_4&quot;,&quot;area-name&quot;:&quot;Room 4&quot;,&quot;area-x&quot;:6,&quot;area-y&quot;:4,&quot;area-width&quot;:6,&quot;area-height&quot;:4,&quot;area-notes&quot;:&quot;Illustrative room geometry&quot;}" aria-label="Edit ROOM_4">Edit area</button>
+              <button type="button" data-open-dialog="delete-dialog" data-record="ROOM_4" data-record-name="Room 4" data-record-kind="area" class="danger" aria-label="Delete ROOM_4">Delete area</button>
+            </div>
+          </article>
+        </div>
+        <nav class="pagination" aria-label="Areas pagination">
+          <p>Showing 1–4 of 4 areas</p>
+          <label for="areas-page-size">Rows per page</label>
+          <select data-styled-dropdown id="areas-page-size" disabled>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+          </select>
+          <ul class="page-links">
+            <li>
+              <button type="button" disabled>Previous</button>
+            </li>
+            <li>
+              <button type="button" aria-current="page" disabled>1</button>
+            </li>
+            <li>
+              <button type="button" disabled>Next</button>
+            </li>
+          </ul>
+        </nav>
+        <!-- Mẫu thay thế: ẩn dữ liệu và phân trang, chỉ bỏ hidden ở một trạng thái tương ứng. -->
+        <div id="areas-empty" class="empty-state" hidden>
+          <h3>No areas yet</h3>
+          <p>Add a record when data is available.</p>
+        </div>
+        <div id="areas-no-results" class="no-results" hidden>
+          <h3>No matching results</h3>
+          <p>Clear the filters or try another search.</p>
+        </div>
+        <div id="areas-loading" class="loading-state" role="status" hidden>
+          <p>Loading areas…</p>
+        </div>
+        <div id="areas-error" class="error-state" role="alert" hidden>
+          <h3>Unable to load areas</h3>
+          <p>Try again when the service is available.</p>
+          <button type="button" disabled>Try again</button>
+        </div>
+      </section>
+      <section class="ap-list" aria-labelledby="aps-heading">
+        <header class="section-header">
+          <h2 id="aps-heading">Access points</h2>
+          <button type="button" data-open-dialog="ap-editor" data-editor-mode="add" data-dialog-title="Add AP">Add AP</button>
+        </header>
+        <p>RSSI slots 1–4 identify the same four APs in every room.</p>
+        <p>Enabled is a configuration setting. Missing signal is a separate observation and does not mean an AP is disabled. X and Y use meters.</p>
+        <form id="ap-filters" class="static-form">
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="ap-query">Search APs</label>
+              <input id="ap-query" name="ap-query" type="search" >
+            </div>
+            <div class="form-field">
+              <label for="ap-status">Status</label>
+              <select data-styled-dropdown id="ap-status" name="ap-status" >
+                <option>All</option>
+                <option>Enabled</option>
+                <option>Disabled</option>
+                <option>Moved</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit">Apply filters</button>
+            <button type="reset" class="secondary">Clear</button>
+          </div>
+        </form>
+        <div class="table-scroll" role="region" tabindex="0" aria-label="Access point configuration">
+          <table class="data-table">
+            <caption>Access point configuration — Demo data</caption>
+            <thead>
+              <tr>
+                <th scope="col">Slot</th>
+                <th scope="col">Code</th>
+                <th scope="col">SSID</th>
+                <th scope="col">Placement</th>
+                <th scope="col">X (m)</th>
+                <th scope="col">Y (m)</th>
+                <th scope="col">Enabled</th>
+                <th scope="col">Moved</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <th scope="row">AP_01</th>
+                <td>WiFi-Room-1</td>
+                <td>ROOM_1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>
+                  <span class="status-badge">Enabled</span>
+                </td>
+                <td>
+                  <span class="status-badge">No</span>
+                </td>
+                <td>
+                  <button type="button" data-open-dialog="ap-editor" data-dialog-title="Edit AP" data-preview-values="{&quot;ap-slot&quot;:&quot;1&quot;,&quot;ap-code&quot;:&quot;AP_01&quot;,&quot;ap-ssid&quot;:&quot;WiFi-Room-1&quot;,&quot;ap-placement&quot;:&quot;ROOM_1&quot;,&quot;ap-x&quot;:1,&quot;ap-y&quot;:1,&quot;ap-enabled&quot;:true,&quot;ap-moved&quot;:false}" aria-label="Edit AP_01">Edit AP</button>
+                  <button type="button" data-open-dialog="delete-dialog" data-record="AP_01" data-record-name="WiFi-Room-1" data-record-kind="AP" class="danger" aria-label="Delete AP_01">Delete AP</button>
+                </td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <th scope="row">AP_02</th>
+                <td>WiFi-Room-2</td>
+                <td>ROOM_2</td>
+                <td>7</td>
+                <td>1</td>
+                <td>
+                  <span class="status-badge">Enabled</span>
+                </td>
+                <td>
+                  <span class="status-badge">No</span>
+                </td>
+                <td>
+                  <button type="button" data-open-dialog="ap-editor" data-dialog-title="Edit AP" data-preview-values="{&quot;ap-slot&quot;:&quot;2&quot;,&quot;ap-code&quot;:&quot;AP_02&quot;,&quot;ap-ssid&quot;:&quot;WiFi-Room-2&quot;,&quot;ap-placement&quot;:&quot;ROOM_2&quot;,&quot;ap-x&quot;:7,&quot;ap-y&quot;:1,&quot;ap-enabled&quot;:true,&quot;ap-moved&quot;:false}" aria-label="Edit AP_02">Edit AP</button>
+                  <button type="button" data-open-dialog="delete-dialog" data-record="AP_02" data-record-name="WiFi-Room-2" data-record-kind="AP" class="danger" aria-label="Delete AP_02">Delete AP</button>
+                </td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <th scope="row">AP_03</th>
+                <td>WiFi-Room-3</td>
+                <td>ROOM_3</td>
+                <td>1</td>
+                <td>5</td>
+                <td>
+                  <span class="status-badge">Enabled</span>
+                </td>
+                <td>
+                  <span class="status-badge">Yes</span>
+                </td>
+                <td>
+                  <button type="button" data-open-dialog="ap-editor" data-dialog-title="Edit AP" data-preview-values="{&quot;ap-slot&quot;:&quot;3&quot;,&quot;ap-code&quot;:&quot;AP_03&quot;,&quot;ap-ssid&quot;:&quot;WiFi-Room-3&quot;,&quot;ap-placement&quot;:&quot;ROOM_3&quot;,&quot;ap-x&quot;:1,&quot;ap-y&quot;:5,&quot;ap-enabled&quot;:true,&quot;ap-moved&quot;:true}" aria-label="Edit AP_03">Edit AP</button>
+                  <button type="button" data-open-dialog="delete-dialog" data-record="AP_03" data-record-name="WiFi-Room-3" data-record-kind="AP" class="danger" aria-label="Delete AP_03">Delete AP</button>
+                </td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <th scope="row">AP_04</th>
+                <td>WiFi-Room-4</td>
+                <td>ROOM_4</td>
+                <td>7</td>
+                <td>5</td>
+                <td>
+                  <span class="status-badge">Disabled</span>
+                </td>
+                <td>
+                  <span class="status-badge">No</span>
+                </td>
+                <td>
+                  <button type="button" data-open-dialog="ap-editor" data-dialog-title="Edit AP" data-preview-values="{&quot;ap-slot&quot;:&quot;4&quot;,&quot;ap-code&quot;:&quot;AP_04&quot;,&quot;ap-ssid&quot;:&quot;WiFi-Room-4&quot;,&quot;ap-placement&quot;:&quot;ROOM_4&quot;,&quot;ap-x&quot;:7,&quot;ap-y&quot;:5,&quot;ap-enabled&quot;:false,&quot;ap-moved&quot;:false}" aria-label="Edit AP_04">Edit AP</button>
+                  <button type="button" data-open-dialog="delete-dialog" data-record="AP_04" data-record-name="WiFi-Room-4" data-record-kind="AP" class="danger" aria-label="Delete AP_04">Delete AP</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <nav class="pagination" aria-label="Access points pagination">
+          <p>Showing 1–4 of 4 access points</p>
+          <label for="aps-page-size">Rows per page</label>
+          <select data-styled-dropdown id="aps-page-size" disabled>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+          </select>
+          <ul class="page-links">
+            <li>
+              <button type="button" disabled>Previous</button>
+            </li>
+            <li>
+              <button type="button" aria-current="page" disabled>1</button>
+            </li>
+            <li>
+              <button type="button" disabled>Next</button>
+            </li>
+          </ul>
+        </nav>
+        <!-- Mẫu thay thế: ẩn dữ liệu và phân trang, chỉ bỏ hidden ở một trạng thái tương ứng. -->
+        <div id="aps-empty" class="empty-state" hidden>
+          <h3>No access points yet</h3>
+          <p>Add a record when data is available.</p>
+        </div>
+        <div id="aps-no-results" class="no-results" hidden>
+          <h3>No matching results</h3>
+          <p>Clear the filters or try another search.</p>
+        </div>
+        <div id="aps-loading" class="loading-state" role="status" hidden>
+          <p>Loading access points…</p>
+        </div>
+        <div id="aps-error" class="error-state" role="alert" hidden>
+          <h3>Unable to load access points</h3>
+          <p>Try again when the service is available.</p>
+          <button type="button" disabled>Try again</button>
+        </div>
+      </section>
+      <section class="configuration-notes" aria-labelledby="configuration-heading">
+        <h2 id="configuration-heading">Positioning setup</h2>
+        <p>Additional areas can be managed; the experiment classifies ROOM_1–ROOM_4.</p>
+      </section>
+    </main>
+    <dialog id="area-editor" aria-labelledby="area-editor-title">
+      <header class="dialog-header">
+        <h2 id="area-editor-title">Add / edit area</h2>
+        <button type="button" data-close-dialog aria-label="Close area details editor">Close</button>
+      </header>
+      <form id="area-form">
+        <div class="form-error-summary" role="alert" hidden>
+          <p>Review the highlighted fields before continuing.</p>
+        </div>
+        <fieldset>
+          <legend>Area details</legend>
+          <div class="form-field">
+            <label for="area-code">Code</label>
+            <input id="area-code" name="area-code" type="text" required value="ROOM_1">
+          </div>
+          <div class="form-field">
+            <label for="area-name">Name</label>
+            <input id="area-name" name="area-name" type="text" required value="Room 1">
+          </div>
+          <div class="form-field">
+            <label for="area-x">X (m)</label>
+            <input id="area-x" name="area-x" type="number" step="0.01" value="0">
+          </div>
+          <div class="form-field">
+            <label for="area-y">Y (m)</label>
+            <input id="area-y" name="area-y" type="number" step="0.01" value="0">
+          </div>
+          <div class="form-field">
+            <label for="area-width">Width (m)</label>
+            <input id="area-width" name="area-width" type="number" required min="0.01" step="0.01" value="6">
+          </div>
+          <div class="form-field">
+            <label for="area-height">Height (m)</label>
+            <input id="area-height" name="area-height" type="number" required min="0.01" step="0.01" value="4">
+          </div>
+          <div class="form-field">
+            <label for="area-notes">Notes</label>
+            <textarea id="area-notes" name="area-notes" >
+            </textarea>
+          </div>
+        </fieldset>
+        <!-- Mẫu lỗi: bỏ hidden và gắn aria-invalid/aria-describedby vào trường tương ứng. -->
+        <p id="area-code-error" class="field-error" hidden>This code is already in use.</p>
+        <p id="area-size-error" class="field-error" hidden>Width and height must be greater than zero.</p>
+        <p class="data-note">Static preview. No changes are saved.</p>
+        <footer class="form-actions">
+          <button type="button" data-close-dialog>Cancel</button>
+          <button type="submit">Save changes</button>
+        </footer>
+      </form>
+    </dialog>
+    <dialog id="ap-editor" aria-labelledby="ap-editor-title">
+      <header class="dialog-header">
+        <h2 id="ap-editor-title">Add / edit AP</h2>
+        <button type="button" data-close-dialog aria-label="Close access point details editor">Close</button>
+      </header>
+      <form id="ap-form">
+        <div class="form-error-summary" role="alert" hidden>
+          <p>Review the highlighted fields before continuing.</p>
+        </div>
+        <fieldset>
+          <legend>Access point details</legend>
+          <div class="form-field">
+            <label for="ap-slot">Slot</label>
+            <select data-styled-dropdown id="ap-slot" name="ap-slot" required>
+              <option selected>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+            </select>
+          </div>
+          <small>Each slot must be unique across the four positioning APs.</small>
+          <div class="form-field">
+            <label for="ap-code">Code</label>
+            <input id="ap-code" name="ap-code" type="text" value="AP_01">
+          </div>
+          <div class="form-field">
+            <label for="ap-ssid">SSID</label>
+            <input id="ap-ssid" name="ap-ssid" type="text" required value="WiFi-Room-1">
+          </div>
+          <div class="form-field">
+            <label for="ap-placement">Placement</label>
+            <select data-styled-dropdown id="ap-placement" name="ap-placement" >
+              <option>Unassigned</option>
+              <option selected>ROOM_1</option>
+              <option>ROOM_2</option>
+              <option>ROOM_3</option>
+              <option>ROOM_4</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="ap-x">X (m)</label>
+            <input id="ap-x" name="ap-x" type="number" step="0.01" value="1">
+          </div>
+          <div class="form-field">
+            <label for="ap-y">Y (m)</label>
+            <input id="ap-y" name="ap-y" type="number" step="0.01" value="1">
+          </div>
+          <div class="checkbox-field">
+            <input id="ap-enabled" name="ap-enabled" type="checkbox" checked>
+            <label for="ap-enabled">Enabled</label>
+          </div>
+          <div class="checkbox-field">
+            <input id="ap-moved" name="ap-moved" type="checkbox" >
+            <label for="ap-moved">Moved</label>
+          </div>
+          <div class="form-field">
+            <label for="ap-notes">Notes</label>
+            <textarea id="ap-notes" name="ap-notes" >
+            </textarea>
+          </div>
+        </fieldset>
+        <p id="ap-slot-error" class="field-error" hidden>This RSSI slot is already assigned.</p>
+        <p id="ap-code-error" class="field-error" hidden>This AP code is already in use.</p>
+        <p class="data-note">Static preview. No changes are saved.</p>
+        <footer class="form-actions">
+          <button type="button" data-close-dialog>Cancel</button>
+          <button type="submit">Save changes</button>
+        </footer>
+      </form>
+    </dialog>
+    <dialog id="delete-dialog" aria-labelledby="delete-title" aria-describedby="delete-description">
+      <h2 id="delete-title">Delete area or AP?</h2>
+      <p id="delete-description">Review this record before deleting it.</p>
+      <dl class="record-details">
+        <dt>Record ID</dt>
+        <dd>ROOM_1 / AP_01</dd>
+        <dt>Record name</dt>
+        <dd>area or AP preview</dd>
+        <dt>Linked-record warning</dt>
+        <dd>Sessions and survey fingerprints reference this configuration. Remove references before deletion.</dd>
+      </dl>
+      <p class="dependency-warning">Deletion is blocked while linked records exist.</p>
+      <div class="dialog-actions">
+        <button type="button" data-close-dialog>Cancel</button>
+        <button type="button" class="danger" disabled>Delete area or AP</button>
+      </div>
+    </dialog>
+    <div class="toast-region" role="status" aria-live="polite" aria-atomic="true">
+      <!-- Bỏ hidden để kiểm tra mẫu thông báo. -->
+      <div class="toast" hidden>
+        <p>Changes saved.</p>
+        <button type="button" data-dismiss-feedback aria-label="Dismiss notification">Dismiss</button>
+      </div>
+    </div>
+    <div class="page-error" role="alert" hidden>
+      <p>This content could not be loaded.</p>
+      <button type="button" disabled>Try again</button>
+    </div>
+  </body>
+</html>

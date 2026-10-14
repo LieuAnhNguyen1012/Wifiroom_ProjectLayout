@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#153e39">
+    <meta name="description" content="Log in to your WiFi Room positioning workspace.">
+    <title>Log in | WiFi Room</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./theme.css">
+    <script src="./theme.js"></script>
+    <script src="./login-intro.js" defer></script>
+    <script src="./login-transition.js" defer></script>
+    <script src="./main.js" defer>
+    </script>
+  </head>
+  <body class="login-bg">
+    <div class="login-theme-bar"><div class="theme-control" hidden>
+          <label for="theme-mode">Appearance</label>
+          <select id="theme-mode" data-styled-dropdown aria-label="Color theme">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="system" selected>System</option>
+          </select>
+        </div></div>
+    <a class="skip-link" href="#login-form">Skip to login</a>
+    <svg class="svg-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <symbol id="i-wifi" viewBox="0 0 24 24">
+          <path d="M3 8a15 15 0 0 1 18 0M6 12a10 10 0 0 1 12 0M9 16a5 5 0 0 1 6 0" />
+          <circle cx="12" cy="20" r="1" />
+        </symbol>
+        <symbol id="i-arrow" viewBox="0 0 24 24">
+          <path d="M5 12h14m-5-5 5 5-5 5" />
+        </symbol>
+      </defs>
+    </svg>
+    <main id="main-content" class="login-layout login-experience">
+      <section class="login-intro" aria-labelledby="story-heading" hidden>
+        <div class="intro-copy">
+          <a class="brand" href="login.html"><span class="brand-mark" aria-hidden="true"><svg><use href="#i-wifi" /></svg></span>WiFi Room<span class="brand-period">.</span></a>
+          <p class="eyebrow">INDOOR POSITIONING WORKSPACE</p>
+          <h1 id="story-heading">Every room.<br />One connected space.</h1>
+          <p>Four rooms. One signal. A clearer view of your workspace.</p>
+        </div>
+        <div class="intro-model-space" aria-hidden="true"></div>
+        <div class="intro-actions">
+          <button class="button intro-enter" type="button" aria-controls="login-panel">Log in <svg aria-hidden="true"><use href="#i-arrow" /></svg></button>
+          <p>Scroll down to continue <span aria-hidden="true">↓</span></p>
+        </div>
+      </section>
+      <div class="intro-scene" aria-hidden="true">
+        <div class="intro-wave"></div><div class="intro-wave wave-delayed"></div>
+        <div class="intro-wifi"><svg><use href="#i-wifi" /></svg><span>WiFi Room</span></div>
+        <div class="intro-room room-1"><div class="room-orbit"><div class="room-face"><span class="room-number">01</span><span class="room-plan"><i></i><i></i></span><span class="room-caption"><i></i>Room 01</span></div></div></div>
+        <div class="intro-room room-2"><div class="room-orbit"><div class="room-face"><span class="room-number">02</span><span class="room-plan"><i></i><i></i></span><span class="room-caption"><i></i>Room 02</span></div></div></div>
+        <div class="intro-room room-3"><div class="room-orbit"><div class="room-face"><span class="room-number">03</span><span class="room-plan"><i></i><i></i></span><span class="room-caption"><i></i>Room 03</span></div></div></div>
+        <div class="intro-room room-4"><div class="room-orbit"><div class="room-face"><span class="room-number">04</span><span class="room-plan"><i></i><i></i></span><span class="room-caption"><i></i>Room 04</span></div></div></div>
+      </div>
+      <section id="login-panel" class="login-panel" aria-labelledby="login-heading">
+        <div class="login-box">
+          <header class="login-heading">
+            <p class="small-label">YOUR WORKSPACE, SIMPLIFIED</p>
+            <h2 id="login-heading" tabindex="-1">Welcome back</h2>
+            <p class="muted">Log in to your positioning workspace.</p>
+          </header>
+          <!-- Mẫu sai thông tin đăng nhập: bỏ hidden ở #login-error. Mẫu lỗi trường: bỏ hidden ở lỗi tương ứng, thêm aria-invalid="true" và aria-describedby="username-error" / "password-error" vào input đó. Mẫu đang gửi: ẩn #login-btn, bỏ hidden ở #login-submitting, thêm aria-busy="true" vào form. Đây chỉ là bố cục mẫu, không gửi dữ liệu. Mặc định: các lỗi và #login-submitting đều hidden, form không aria-busy, input không aria-invalid/aria-describedby, #login-btn hiển thị. -->
+          <p id="login-error" class="login-error" role="alert" hidden>Invalid username or password.</p>
+          <form id="login-form" aria-labelledby="login-heading" tabindex="-1">
+            <div class="form-field">
+              <label for="username">Username</label>
+              <input id="username" name="username" type="text" autocomplete="username" placeholder="Enter your username" value="admin" required />
+              <p id="username-error" class="field-error" hidden>Enter your username.</p>
+            </div>
+            <div class="form-field">
+              <label for="password">Password</label>
+              <div class="password-field">
+                <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" value="123456" required />
+                <button type="button" id="password-toggle" aria-controls="password" aria-pressed="false" >
+                  Show password
+                </button>
+              </div>
+              <p id="password-error" class="field-error" hidden>Enter your password.</p>
+            </div>
+            <a class="button primary login-submit" id="login-btn" href="index.html">
+              Log in to workspace <svg aria-hidden="true" focusable="false">
+                <use href="#i-arrow" />
+              </svg>
+            </a>
+            <button class="button primary login-submit" id="login-submitting" type="submit" disabled hidden>
+              Logging in… <span class="login-spinner" aria-hidden="true"></span>
+            </button>
+          </form>
+          <hr class="demo-divider" />
+          <section class="demo-accounts" aria-labelledby="demo-heading">
+            <h3 id="demo-heading">Demo accounts</h3>
+            
+            <ul class="demo-users">
+              <li>
+                <code>admin</code>
+                <span>Administrator</span>
+              </li>
+              <li>
+                <code>map_manager</code>
+                <span>Map Manager</span>
+              </li>
+              <li>
+                <code>surveyor</code>
+                <span>Surveyor</span>
+              </li>
+              <li>
+                <code>reviewer</code>
+                <span>Reviewer</span>
+              </li>
+              <li>
+                <code>viewer</code>
+                <span>Viewer</span>
+              </li>
+            </ul>
+            <p>Shared demo password: <code>123456</code>
+            </p>
+            <p>Static demo only. These accounts do not create an authenticated session.</p>
+           
+          </section>
+        </div>
+        <p class="login-footer">WiFi Room · Indoor positioning made simple</p>
+      </section>
+    </main>
+  </body>
+</html>

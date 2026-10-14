@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#153e39" />
+    <meta
+      name="description"
+      content="WiFi Room indoor positioning workspace."
+    />
+    <title>Dashboard | WiFi Room</title>
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./theme.css">
+    <script src="./theme.js"></script>
+    <script src="./dashboard-entry.js"></script>
+    <script src="./main.js" defer></script>
+  </head>
+  <body class="workspace-page">
+    <svg class="svg-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <symbol id="i-wifi" viewBox="0 0 24 24">
+          <path
+            d="M3 8a15 15 0 0 1 18 0M6 12a10 10 0 0 1 12 0M9 16a5 5 0 0 1 6 0"
+          />
+          <circle cx="12" cy="20" r="1" />
+        </symbol>
+        <symbol id="i-grid" viewBox="0 0 24 24">
+          <rect x="3" y="3" width="7" height="7" rx="1.5" />
+          <rect x="14" y="3" width="7" height="7" rx="1.5" />
+          <rect x="3" y="14" width="7" height="7" rx="1.5" />
+          <rect x="14" y="14" width="7" height="7" rx="1.5" />
+        </symbol>
+        <symbol id="i-room" viewBox="0 0 24 24">
+          <path d="M4 21V3h16v18M2 21h20M8 21V7h8v14M12 13h1" />
+        </symbol>
+        <symbol id="i-tag" viewBox="0 0 24 24">
+          <path d="M3 3h9l9 9-9 9-9-9Z" />
+          <circle cx="8" cy="8" r="1" />
+        </symbol>
+        <symbol id="i-arrow" viewBox="0 0 24 24">
+          <path d="M5 12h14m-5-5 5 5-5 5" />
+        </symbol>
+        <symbol id="i-target" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="8" />
+          <circle cx="12" cy="12" r="3" />
+          <path d="M12 1v4m0 14v4M1 12h4m14 0h4" />
+        </symbol>
+        <symbol id="i-search" viewBox="0 0 24 24">
+          <circle cx="10" cy="10" r="6" />
+          <path d="m15 15 6 6" />
+        </symbol>
+        <symbol id="i-logout" viewBox="0 0 24 24">
+          <path d="M9 4H4v16h5m0-8h12m-4-4 4 4-4 4" />
+        </symbol>
+      </defs>
+    </svg>
+    <div id="main-app" class="app-layout">
+      <header class="top-navbar">
+        <a class="skip-link" href="#main-content">Skip to main content</a>
+        <div class="nav-left">
+          <a class="brand" href="index.html" aria-label="WiFi Room dashboard">
+            <span class="brand-mark" aria-hidden="true">
+              <svg>
+                <use href="#i-wifi" />
+              </svg>
+            </span>
+            <span>WiFi Room</span>
+          </a>
+          <!-- Menu dùng chung cho desktop và mobile; vẫn hiện khi JavaScript bị tắt. -->
+          <button
+            class="menu-toggle"
+            type="button"
+            aria-controls="primary-navigation"
+            aria-expanded="false"
+          >
+            Menu
+          </button>
+          <nav id="primary-navigation" aria-label="Main navigation">
+            <ul class="menu-links">
+              <li>
+                <a href="index.html" class="active" aria-current="page"
+                  >Dashboard</a
+                >
+              </li>
+              <li>
+                <a href="area.html">Areas &amp; APs</a>
+              </li>
+              <li>
+                <a href="survey.html">Surveys</a>
+              </li>
+              <li>
+                <a href="sessions.html">Sessions</a>
+              </li>
+              <li>
+                <a href="analytics.html">Analytics</a>
+              </li>
+              <li><a href="admin.html">Admin</a></li>
+          </ul>
+          </nav>
+        </div>
+        <div class="nav-right">
+        <div class="theme-control" hidden>
+          <label for="theme-mode">Appearance</label>
+          <select id="theme-mode" data-styled-dropdown aria-label="Color theme">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="system" selected>System</option>
+          </select>
+        </div>
+          <span class="demo-badge">Demo workspace</span>
+          <div class="user-info">
+            <span class="user-name">Demo Administrator</span>
+            <span class="user-role">ADMIN</span>
+          </div>
+          <a
+            id="logout-btn"
+            class="logout-button"
+            href="login.html"
+          >
+            Log out
+          </a>
+        </div>
+      </header>
+      <div class="app-body">
+        <main id="main-content" class="content-container" tabindex="-1">
+          <section
+            id="dashboard"
+            class="content-section"
+            aria-labelledby="overview-heading"
+          >
+            <header class="page-header">
+              <div>
+                <span class="eyebrow">YOUR SPACE AT A GLANCE</span>
+                <h1 id="overview-heading" tabindex="-1">Workspace overview</h1>
+                <p>Rooms, tag activity and positioning quality at a glance.</p>
+              </div>
+              <!-- Nút mẫu; chưa tải lại dữ liệu. -->
+              <button class="button secondary" type="button">Refresh</button>
+            </header>
+            <section
+              class="kpi-row"
+              aria-labelledby="kpi-heading"
+              aria-describedby="kpi-demo-note"
+            >
+              <h2 id="kpi-heading" class="visually-hidden">System summary</h2>
+              <p id="kpi-demo-note" class="kpi-demo-note">
+                <span class="demo-badge">Demo data</span> Illustrative values
+                for this static preview.
+              </p>
+              <article class="kpi-card">
+                <h3>Total sessions</h3>
+                <p class="kpi-value">1,250</p>
+                <small>All stored sessions</small>
+              </article>
+              <article class="kpi-card">
+                <h3>Accuracy</h3>
+                <!-- Chưa có kết quả đánh giá; không thay bằng 0%. -->
+                <p class="kpi-value kpi-value-text">Not evaluated</p>
+                <small>Eligible device sessions</small>
+              </article>
+              <article class="kpi-card">
+                <h3>Missing-signal sessions</h3>
+                <p class="kpi-value">18</p>
+                <small>AP_LOST</small>
+              </article>
+              <article class="kpi-card">
+                <h3>Current survey</h3>
+                <p class="kpi-value kpi-value-text">Survey 01</p>
+                <a href="survey.html">View surveys</a>
+              </article>
+            </section>
+            <div class="overview-grid dashboard-grid">
+              <section class="panel map-panel" aria-labelledby="map-heading">
+                <header class="panel-header">
+                  <h2 id="map-heading">Live floor plan</h2>
+                  <span class="subtle-badge">Demo preview</span>
+                  <a href="area.html#area-editor">Add area</a>
+                </header>
+                <ul class="map-legend" aria-label="Floor plan legend">
+                  <li>
+                    <span class="map-key map-key-area" aria-hidden="true">
+                    </span
+                    >Area
+                  </li>
+                  <li>
+                    <span class="map-key map-key-selected" aria-hidden="true">
+                    </span
+                    >Selected tag
+                  </li>
+                  <li>
+                    <span class="map-key map-key-other" aria-hidden="true">
+                    </span
+                    >Other tags
+                  </li>
+                  <li>
+                    <span class="map-key map-key-border" aria-hidden="true">
+                    </span
+                    >BORDER
+                  </li>
+                  <li>
+                    <span class="map-key map-key-lost" aria-hidden="true">
+                    </span
+                    >AP_LOST
+                  </li>
+                  <li>
+                    <span class="map-key map-key-offline" aria-hidden="true">
+                    </span
+                    >Offline
+                  </li>
+                </ul>
+                <!-- Mẫu no-map: ẩn .floorplan và .area-summary, bỏ hidden ở khối bên dưới. -->
+                <div class="empty-state" hidden>
+                  <h3>No areas configured</h3>
+                  <p>Add an area to start building the floor plan.</p>
+                  <a href="area.html#area-editor">Add area</a>
+                </div>
+                <figure class="floorplan">
+                  <!-- Chỉ dành chỗ cho canvas; chưa vẽ hoặc tính vị trí. -->
+                  <canvas
+                    id="floorplan-canvas"
+                    width="640"
+                    height="360"
+                    role="img"
+                    aria-label="Room layout and tags"
+                    aria-describedby="floorplan-summary"
+                  >
+                    The four demo rooms are listed below with sizes, coordinates
+                    and tags.
+                  </canvas>
+                  <figcaption id="floorplan-summary">
+                    <strong>Demo data</strong> — Four rooms; illustrative tag
+                    positions. The drawing area is reserved; the map is not
+                    rendered in this static preview. Room details are listed
+                    below. Sizes are width × height in meters; coordinates are
+                    the top-left corner (X, Y) in meters. BORDER means an
+                    uncertain room boundary; AP_LOST means missing signal;
+                    Offline means the tag is disconnected. No room is assigned
+                    while BORDER or AP_LOST.
+                  </figcaption>
+                </figure>
+                <ul class="area-summary" aria-label="Demo room details">
+                  <li>
+                    <strong>Room 01 · Meeting room</strong>
+                    <span>Code: ROOM_1</span>
+                    <span>Size: 6 × 4 m</span>
+                    <span>Coordinates: (0, 0) m</span>
+                    <span>Tags: TAG-01 (selected)</span>
+                  </li>
+                  <li>
+                    <strong>Room 02 · Open workspace</strong>
+                    <span>Code: ROOM_2</span>
+                    <span>Size: 6 × 4 m</span>
+                    <span>Coordinates: (6, 0) m</span>
+                    <span>Tags: TAG-02</span>
+                  </li>
+                  <li>
+                    <strong>Room 03 · Research lab</strong>
+                    <span>Code: ROOM_3</span>
+                    <span>Size: 6 × 4 m</span>
+                    <span>Coordinates: (0, 4) m</span>
+                    <span>Tags: TAG-03</span>
+                  </li>
+                  <li>
+                    <strong>Room 04 · Quiet room</strong>
+                    <span>Code: ROOM_4</span>
+                    <span>Size: 6 × 4 m</span>
+                    <span>Coordinates: (6, 4) m</span>
+                    <span>Tags: None</span>
+                  </li>
+                </ul>
+              </section>
+              <section class="panel tag-panel" aria-labelledby="tag-heading">
+                <h2 id="tag-heading">Selected tag</h2>
+                <label for="selected-tag">Tag</label>
+                <select data-styled-dropdown
+                  id="selected-tag"
+                  aria-describedby="selected-tag-hint"
+                  disabled
+                >
+                  <option value="TAG-01" selected>TAG-01</option>
+                  <option value="TAG-02">TAG-02</option>
+                  <option value="TAG-03">TAG-03</option>
+                </select>
+                <small id="selected-tag-hint"
+                  >Static preview. Tag selection is not available yet.</small
+                >
+                <!-- Mẫu mặc định: hiện .tag-example-default. Để xem No readings hoặc vị trí không xác định, ẩn mẫu mặc định và bỏ hidden ở toàn bộ .tag-example-empty hoặc .tag-example-unknown. Chỉ hiện một mẫu mỗi lần. Đổi AP_LOST thành BORDER để kiểm tra trạng thái biên; đổi Online thành Offline để kiểm tra mất kết nối. Chưa polling hoặc cập nhật dữ liệu. -->
+                <p class="tag-status tag-example-default">
+                  <span class="tag-connection">Online</span>
+                  <span class="demo-badge">Demo data</span>
+                </p>
+                <dl class="tag-details tag-example-default">
+                  <dt>Tag code</dt>
+                  <dd>TAG-01</dd>
+                  <dt>Current label</dt>
+                  <dd>ROOM_1</dd>
+                  <dt>Measured at</dt>
+                  <dd>
+                    <time datetime="2026-10-12T10:42:00+07:00"
+                      >12 Oct 2026, 10:42:00 (UTC+07:00)</time
+                    >
+                  </dd>
+                  <dt>Received at</dt>
+                  <dd>
+                    <time datetime="2026-10-12T10:42:02+07:00"
+                      >12 Oct 2026, 10:42:02 (UTC+07:00)</time
+                    >
+                  </dd>
+                  <dt>Confidence</dt>
+                  <dd>Not evaluated</dd>
+                </dl>
+                <p class="tag-status tag-example-empty" hidden>
+                  <span class="tag-connection tag-connection-muted"
+                    >No readings</span
+                  >
+                  <span class="demo-badge">Demo data</span>
+                </p>
+                <dl class="tag-details tag-example-empty" hidden>
+                  <dt>Tag code</dt>
+                  <dd>TAG-01</dd>
+                  <dt>Current label</dt>
+                  <dd>Unknown — no readings</dd>
+                  <dt>Measured at</dt>
+                  <dd>Not measured</dd>
+                  <dt>Received at</dt>
+                  <dd>Not received</dd>
+                  <dt>Confidence</dt>
+                  <dd>Not evaluated</dd>
+                </dl>
+                <p class="tag-status tag-example-unknown" hidden>
+                  <span class="tag-connection">Online</span>
+                  <span class="demo-badge">Demo data</span>
+                </p>
+                <dl class="tag-details tag-example-unknown" hidden>
+                  <dt>Tag code</dt>
+                  <dd>TAG-01</dd>
+                  <dt>Current label</dt>
+                  <dd>AP_LOST</dd>
+                  <dt>Measured at</dt>
+                  <dd>
+                    <time datetime="2026-10-12T10:42:00+07:00"
+                      >12 Oct 2026, 10:42:00 (UTC+07:00)</time
+                    >
+                  </dd>
+                  <dt>Received at</dt>
+                  <dd>
+                    <time datetime="2026-10-12T10:42:02+07:00"
+                      >12 Oct 2026, 10:42:02 (UTC+07:00)</time
+                    >
+                  </dd>
+                  <dt>Confidence</dt>
+                  <dd>Not evaluated</dd>
+                </dl>
+                <p class="tag-position-note tag-example-unknown" hidden>
+                  No room assigned while BORDER or AP_LOST.
+                </p>
+                <a href="sessions.html">View tag sessions</a>
+              </section>
+            </div>
+            <section class="tag-list" aria-labelledby="tags-heading">
+              <h2 id="tags-heading">All tags</h2>
+              <p class="updated-at">Last updated: &mdash;</p>
+              <p id="tag-list-hint" class="tag-list-hint">
+                <span class="demo-badge">Demo data</span> Static preview. Tag
+                selection is not available yet.
+              </p>
+              <ul class="tag-cards">
+                <li>
+                  <article class="tag-card" aria-labelledby="tag-01-heading">
+                    <h3 id="tag-01-heading">TAG-01</h3>
+                    <p>
+                      <span class="tag-connection">Online</span>
+                    </p>
+                    <p>Current label: <strong>ROOM_1</strong></p>
+                    <p>
+                      Measured at:
+                      <time datetime="2026-10-12T10:42:00+07:00"
+                        >12 Oct 2026, 10:42:00 (UTC+07:00)</time
+                      >
+                    </p>
+                    <button
+                      class="button secondary"
+                      type="button"
+                      aria-label="Select TAG-01"
+                      aria-describedby="tag-list-hint"
+                      disabled
+                    >
+                      Select tag
+                    </button>
+                  </article>
+                </li>
+                <li>
+                  <article class="tag-card" aria-labelledby="tag-02-heading">
+                    <h3 id="tag-02-heading">TAG-02</h3>
+                    <p>
+                      <span class="tag-connection">Online</span>
+                    </p>
+                    <p>Current label: <strong>ROOM_2</strong></p>
+                    <p>
+                      Measured at:
+                      <time datetime="2026-10-12T10:41:50+07:00"
+                        >12 Oct 2026, 10:41:50 (UTC+07:00)</time
+                      >
+                    </p>
+                    <button
+                      class="button secondary"
+                      type="button"
+                      aria-label="Select TAG-02"
+                      aria-describedby="tag-list-hint"
+                      disabled
+                    >
+                      Select tag
+                    </button>
+                  </article>
+                </li>
+                <li>
+                  <article class="tag-card" aria-labelledby="tag-03-heading">
+                    <h3 id="tag-03-heading">TAG-03</h3>
+                    <p>
+                      <span class="tag-connection tag-connection-muted"
+                        >Offline</span
+                      >
+                    </p>
+                    <p>Current label: <strong>ROOM_3</strong> (last known)</p>
+                    <p>
+                      Measured at:
+                      <time datetime="2026-10-12T10:30:00+07:00"
+                        >12 Oct 2026, 10:30:00 (UTC+07:00)</time
+                      >
+                    </p>
+                    <button
+                      class="button secondary"
+                      type="button"
+                      aria-label="Select TAG-03"
+                      aria-describedby="tag-list-hint"
+                      disabled
+                    >
+                      Select tag
+                    </button>
+                  </article>
+                </li>
+              </ul>
+            </section>
+            <section class="hourly-sessions" aria-labelledby="hourly-heading">
+              <h2 id="hourly-heading">Sessions by hour</h2>
+              <div class="form-field hourly-date">
+                <label for="activity-date">Date</label>
+                <input
+                  id="activity-date"
+                  name="activity-date"
+                  type="date"
+                  value="2026-10-11"
+                  aria-describedby="hourly-date-hint"
+                />
+                <small id="hourly-date-hint"
+                  >Demo data for 11 Oct 2026. Changing the date does not update
+                  this static preview.</small
+                >
+              </div>
+              <figure class="chart-figure">
+                <div class="canvas-container">
+                  <!-- Chỉ dựng khung; chưa vẽ canvas hoặc lọc số liệu theo ngày. -->
+                  <canvas
+                    id="hourly-chart-canvas"
+                    width="960"
+                    height="320"
+                    role="img"
+                    aria-label="Sessions by hour for 11 Oct 2026"
+                    aria-describedby="hourly-chart-summary"
+                  >
+                    Chart drawing is not available. Use View chart data below
+                    for all 24 hourly session counts.
+                  </canvas>
+                  <p class="chart-placeholder" aria-hidden="true">
+                    Chart preview<br />Hourly data is available below.
+                  </p>
+                </div>
+                <figcaption id="hourly-chart-summary">
+                  <strong>Demo data — 11 Oct 2026 (UTC+07:00).</strong>
+                  Horizontal axis: hour of day, 00:00–23:00. Vertical axis:
+                  number of sessions. Each hour covers its start up to, but not
+                  including, the next hour. The sample contains 240 sessions;
+                  the busiest hour starts at 10:00 with 30 sessions. Canvas
+                  drawing is not implemented in this static preview.
+                </figcaption>
+                <details class="chart-data" open>
+                  <summary>View chart data</summary>
+                  <div
+                    class="table-scroll"
+                    role="region"
+                    tabindex="0"
+                    aria-label="Hourly session counts"
+                  >
+                    <table class="data-table">
+                      <caption>
+                        Demo session counts for 11 Oct 2026. Hours use
+                        UTC+07:00; counts are in sessions.
+                      </caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">Hour starting (UTC+07:00)</th>
+                          <th scope="col">Sessions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row">00:00</th>
+                          <td>0</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">01:00</th>
+                          <td>0</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">02:00</th>
+                          <td>0</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">03:00</th>
+                          <td>0</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">04:00</th>
+                          <td>0</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">05:00</th>
+                          <td>0</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">06:00</th>
+                          <td>2</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">07:00</th>
+                          <td>8</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">08:00</th>
+                          <td>18</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">09:00</th>
+                          <td>24</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">10:00</th>
+                          <td>30</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">11:00</th>
+                          <td>22</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">12:00</th>
+                          <td>16</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">13:00</th>
+                          <td>20</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">14:00</th>
+                          <td>26</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">15:00</th>
+                          <td>24</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">16:00</th>
+                          <td>18</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">17:00</th>
+                          <td>12</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">18:00</th>
+                          <td>8</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">19:00</th>
+                          <td>6</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">20:00</th>
+                          <td>4</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">21:00</th>
+                          <td>2</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">22:00</th>
+                          <td>0</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">23:00</th>
+                          <td>0</td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <th scope="row">Total sessions for this date</th>
+                          <td>240</td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                </details>
+              </figure>
+            </section>
+            <section class="alert-summary" aria-labelledby="alerts-heading">
+              <h2 id="alerts-heading">Recent alerts</h2>
+              <p class="data-note">
+                Demo data — illustrative alerts, not live rules.
+              </p>
+              <ul class="alert-list">
+                <li>
+                  <article class="alert-card">
+                    <h3>Tag disconnected</h3>
+                    <p>
+                      Severity: Warning · TAG-03 is offline; the room shown is
+                      its last known label.
+                    </p>
+                    <p>
+                      Time:
+                      <time datetime="2026-10-12T10:35:00+07:00"
+                        >12 Oct 2026, 10:35:00 (UTC+07:00)</time
+                      >
+                      · Tag: TAG-03
+                    </p>
+                    <a href="session-detail.html">Inspect session</a>
+                  </article>
+                </li>
+              </ul>
+              <!-- Mẫu no-alerts: ẩn danh sách phía trên và bỏ hidden. -->
+              <div class="empty-state" hidden>
+                <h3>No recent alerts</h3>
+                <p>No alerts are available in this sample state.</p>
+              </div>
+            </section>
+          </section>
+        </main>
+        <footer class="page-footer">WiFi Room · Demo workspace</footer>
+      </div>
+    </div>
+    <div
+      class="toast-region"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+    >
+      <!-- Bỏ hidden để kiểm tra mẫu thông báo. -->
+      <div class="toast" hidden>
+        <p>Changes saved.</p>
+        <button
+          type="button"
+          data-dismiss-feedback
+          aria-label="Dismiss notification"
+        >
+          Dismiss
+        </button>
+      </div>
+    </div>
+    <div class="page-error" role="alert" hidden>
+      <p>This content could not be loaded.</p>
+      <button type="button" disabled>Try again</button>
+    </div>
+  </body>
+</html>

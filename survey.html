@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#153e39">
+    <meta name="description" content="Manage positioning surveys and collection runs.">
+    <title>Surveys | WiFi Room</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./theme.css">
+    <script src="./theme.js"></script>
+    <script src="./main.js" defer>
+    </script>
+  </head>
+  <body class="workspace-page">
+    <svg class="svg-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <symbol id="i-wifi" viewBox="0 0 24 24">
+          <path d="M3 8a15 15 0 0 1 18 0M6 12a10 10 0 0 1 12 0M9 16a5 5 0 0 1 6 0" />
+          <circle cx="12" cy="20" r="1" />
+        </symbol>
+      </defs>
+    </svg>
+    <header class="top-navbar">
+      <a class="skip-link" href="#main-content">Skip to main content</a>
+      <div class="nav-left">
+        <a class="brand" href="index.html" aria-label="WiFi Room dashboard">
+          <span class="brand-mark" aria-hidden="true">
+            <svg>
+              <use href="#i-wifi" />
+            </svg>
+          </span>
+          <span>WiFi Room</span>
+        </a>
+        <button class="menu-toggle" type="button" aria-controls="primary-navigation" aria-expanded="false" >Menu</button>
+        <nav id="primary-navigation" aria-label="Main navigation">
+          <ul class="menu-links">
+            <li>
+              <a href="index.html">Dashboard</a>
+            </li>
+            <li>
+              <a href="area.html">Areas &amp; APs</a>
+            </li>
+            <li>
+              <a href="survey.html" class="active" aria-current="page">Surveys</a>
+            </li>
+            <li>
+              <a href="sessions.html">Sessions</a>
+            </li>
+            <li>
+              <a href="analytics.html">Analytics</a>
+            </li>
+            <li><a href="admin.html">Admin</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="nav-right">
+        <div class="theme-control" hidden>
+          <label for="theme-mode">Appearance</label>
+          <select id="theme-mode" data-styled-dropdown aria-label="Color theme">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="system" selected>System</option>
+          </select>
+        </div>
+        <span class="demo-badge">Demo workspace</span>
+        <div class="user-info">
+          <span class="user-name">Demo Administrator</span>
+          <span class="user-role">ADMIN</span>
+        </div>
+        <a id="logout-btn" class="logout-button" href="login.html">Log out</a>
+      </div>
+    </header>
+    <main id="main-content" class="container" tabindex="-1">
+      <header class="page-header">
+        <h1>Surveys</h1>
+        <button type="button" data-open-dialog="survey-editor" data-editor-mode="add" data-dialog-title="Create survey">Create survey</button>
+      </header>
+      <p class="data-note">
+        <span class="demo-badge">Demo data</span> Static preview. Filters, save, delete, export and collection actions do not change data.</p>
+      <!-- Mẫu REVIEWER/VIEWER: hiện thông báo và vô hiệu hóa editor, vòng đời và thao tác thu. -->
+      <p class="role-notice empty-state" hidden>Read-only access. Only ADMIN, MAP_MANAGER and SURVEYOR can manage surveys and collection runs.</p>
+      <section class="survey-list" aria-labelledby="surveys-heading">
+        <h2 id="surveys-heading">Survey history</h2>
+        <form id="survey-filters" class="static-form">
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="survey-query">Search surveys</label>
+              <input id="survey-query" name="survey-query" type="search" >
+            </div>
+            <div class="form-field">
+              <label for="survey-state">Survey state</label>
+              <select data-styled-dropdown id="survey-state" name="survey-state" >
+                <option>All</option>
+                <option>Current map</option>
+                <option>Open</option>
+                <option>Finished</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit">Apply filters</button>
+            <button type="reset" class="secondary">Clear</button>
+          </div>
+        </form>
+        <div class="table-scroll" role="region" tabindex="0" aria-label="Survey history">
+          <table class="data-table">
+            <caption>Survey history — Demo data</caption>
+            <thead>
+              <tr>
+                <th scope="col">Code</th>
+                <th scope="col">Name</th>
+                <th scope="col">Sessions</th>
+                <th scope="col">Condition</th>
+                <th scope="col">Accuracy</th>
+                <th scope="col">Calibrated at</th>
+                <th scope="col">Finished at</th>
+                <th scope="col">Current map</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">SURVEY_01</th>
+                <td>Room calibration · <span class="status-badge">Open</span>
+                </td>
+                <td>100 training</td>
+                <td>SURVEY</td>
+                <td>Not evaluated</td>
+                <td>
+                  <time datetime="2026-10-12T09:00:00+07:00">12 Oct 2026, 09:00:00 (UTC+07:00)</time>
+                </td>
+                <td>Not finished</td>
+                <td>
+                  <span class="status-badge">Yes</span>
+                </td>
+                <td>
+                  <div class="card-actions">
+                    <button type="button" data-open-dialog="survey-editor" data-dialog-title="Edit survey" data-preview-values="{&quot;survey-code&quot;:&quot;SURVEY_01&quot;,&quot;survey-name&quot;:&quot;Room calibration&quot;,&quot;survey-condition&quot;:&quot;SURVEY&quot;,&quot;survey-started&quot;:&quot;2026-10-12T09:00&quot;}" aria-label="Edit SURVEY_01">Edit</button>
+                    <button type="button" data-open-dialog="delete-dialog" data-record="SURVEY_01" data-record-name="Room calibration" data-record-kind="survey" aria-label="Delete SURVEY_01">Delete</button>
+                    <button type="button" disabled title="This survey is already the current map.">Use as current map</button>
+                    <button type="button" data-open-dialog="survey-action" data-survey-record="SURVEY_01" data-dialog-title="Record calibration?">Record calibration</button>
+                    <button type="button" data-open-dialog="survey-action" data-survey-record="SURVEY_01" data-dialog-title="Finish survey?">Finish survey</button>
+                    <a href="analytics.html">View fingerprints</a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">SURVEY_02</th>
+                <td>Follow-up · <span class="status-badge">Finished</span>
+                </td>
+                <td>1 sample</td>
+                <td>IMMEDIATE</td>
+                <td>Not evaluated</td>
+                <td>Not calibrated</td>
+                <td>
+                  <time datetime="2026-10-12T11:00:00+07:00">12 Oct 2026, 11:00:00 (UTC+07:00)</time>
+                </td>
+                <td>
+                  <span class="status-badge">No</span>
+                </td>
+                <td>
+                  <div class="card-actions">
+                    <button type="button" data-open-dialog="survey-editor" data-dialog-title="Edit survey" data-preview-values="{&quot;survey-code&quot;:&quot;SURVEY_02&quot;,&quot;survey-name&quot;:&quot;Follow-up&quot;,&quot;survey-condition&quot;:&quot;IMMEDIATE&quot;,&quot;survey-started&quot;:&quot;2026-10-12T09:00&quot;}" aria-label="Edit SURVEY_02">Edit</button>
+                    <button type="button" data-open-dialog="delete-dialog" data-record="SURVEY_02" data-record-name="Follow-up" data-record-kind="survey" aria-label="Delete SURVEY_02">Delete</button>
+                    <button type="button" disabled title="Record calibration before using this survey as a map.">Use as current map</button>
+                    <button type="button" data-open-dialog="survey-action" data-survey-record="SURVEY_02" data-dialog-title="Record calibration?">Record calibration</button>
+                    <button type="button" disabled title="This survey is already finished.">Finish survey</button>
+                    <a href="analytics.html">View fingerprints</a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="data-note">Training sessions do not measure independent accuracy. Current map is separate from Open / Finished. SURVEY_01 is already current; SURVEY_02 is finished and must be calibrated before use as a map. No independent DEVICE accuracy is available.</p>
+        <nav class="pagination" aria-label="Surveys pagination">
+          <p>Showing 1–2 of 2 surveys</p>
+          <label for="surveys-page-size">Rows per page</label>
+          <select data-styled-dropdown id="surveys-page-size" disabled>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+          </select>
+          <ul class="page-links">
+            <li>
+              <button type="button" disabled>Previous</button>
+            </li>
+            <li>
+              <button type="button" aria-current="page" disabled>1</button>
+            </li>
+            <li>
+              <button type="button" disabled>Next</button>
+            </li>
+          </ul>
+        </nav>
+        <!-- Mẫu thay thế: ẩn dữ liệu và phân trang, chỉ bỏ hidden ở một trạng thái tương ứng. -->
+        <div id="surveys-empty" class="empty-state" hidden>
+          <h3>No surveys yet</h3>
+          <p>Add a record when data is available.</p>
+        </div>
+        <div id="surveys-no-results" class="no-results" hidden>
+          <h3>No matching results</h3>
+          <p>Clear the filters or try another search.</p>
+        </div>
+        <div id="surveys-loading" class="loading-state" role="status" hidden>
+          <p>Loading surveys…</p>
+        </div>
+        <div id="surveys-error" class="error-state" role="alert" hidden>
+          <h3>Unable to load surveys</h3>
+          <p>Try again when the service is available.</p>
+          <button type="button" disabled>Try again</button>
+        </div>
+        <p class="empty-state" hidden>No current map selected. Choose a calibrated survey before evaluating device sessions.</p>
+      </section>
+      <section class="collection-setup" aria-labelledby="collection-heading">
+        <h2 id="collection-heading">Collect labeled sessions</h2>
+        <p>Choose the actual room and condition before collecting with a tag.</p>
+        <form id="collection-form">
+          <fieldset>
+            <legend>Collection context</legend>
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="collection-tag">Tag</label>
+                <select data-styled-dropdown id="collection-tag" name="collection-tag" required>
+                  <option selected>TAG-01</option>
+                  <option>TAG-02</option>
+                  <option>TAG-03</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="collection-survey">Survey</label>
+                <select data-styled-dropdown id="collection-survey" name="collection-survey" required>
+                  <option>SURVEY_01 (Open)</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="collection-room">Actual room</label>
+                <select data-styled-dropdown id="collection-room" name="collection-room" required>
+                  <option selected>ROOM_1</option>
+                  <option>ROOM_2</option>
+                  <option>ROOM_3</option>
+                  <option>ROOM_4</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="collection-condition">Condition</label>
+                <select data-styled-dropdown id="collection-condition" name="collection-condition" required>
+                  <option selected>SURVEY</option>
+                  <option>IMMEDIATE</option>
+                  <option>BORDER</option>
+                  <option>AFTER_3H</option>
+                  <option>AP_MOVED</option>
+                  <option>CROWDED</option>
+                  <option>AP_LOST</option>
+                </select>
+              </div>
+            </div>
+          </fieldset>
+          <p class="form-error field-error" role="alert" hidden>This tag is already collecting. Stop its active run before starting another.</p>
+          <p class="data-note">Only open surveys can accept collection runs. Starting a collection is unavailable in this static preview.</p>
+          <button type="submit">Start collection</button>
+        </form>
+      </section>
+      <section class="collection-history" aria-labelledby="collections-heading">
+        <h2 id="collections-heading">Collection runs</h2>
+        <div class="table-scroll" role="region" tabindex="0" aria-label="Collection runs">
+          <table class="data-table">
+            <caption>Collection runs — Demo data</caption>
+            <thead>
+              <tr>
+                <th scope="col">Tag</th>
+                <th scope="col">Survey</th>
+                <th scope="col">Actual room</th>
+                <th scope="col">Condition</th>
+                <th scope="col">Started at</th>
+                <th scope="col">Stopped at</th>
+                <th scope="col">State</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">TAG-02</th>
+                <td>SURVEY_01</td>
+                <td>ROOM_2</td>
+                <td>SURVEY</td>
+                <td>
+                  <time datetime="2026-10-12T10:00:00+07:00">12 Oct 2026, 10:00:00 (UTC+07:00)</time>
+                </td>
+                <td>Not stopped</td>
+                <td>
+                  <span class="status-badge">Collecting</span>
+                </td>
+                <td>
+                  <button type="button" disabled title="Static preview; no device command is sent.">Stop collection</button>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">TAG-03</th>
+                <td>SURVEY_02</td>
+                <td>ROOM_3</td>
+                <td>IMMEDIATE</td>
+                <td>
+                  <time datetime="2026-10-12T09:00:00+07:00">12 Oct 2026, 09:00:00 (UTC+07:00)</time>
+                </td>
+                <td>
+                  <time datetime="2026-10-12T09:30:00+07:00">12 Oct 2026, 09:30:00 (UTC+07:00)</time>
+                </td>
+                <td>
+                  <span class="status-badge">Stopped</span>
+                </td>
+                <td>No active collection</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <nav class="pagination" aria-label="Collection runs pagination">
+          <p>Showing 1–2 of 2 collection runs</p>
+          <label for="collections-page-size">Rows per page</label>
+          <select data-styled-dropdown id="collections-page-size" disabled>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+          </select>
+          <ul class="page-links">
+            <li>
+              <button type="button" disabled>Previous</button>
+            </li>
+            <li>
+              <button type="button" aria-current="page" disabled>1</button>
+            </li>
+            <li>
+              <button type="button" disabled>Next</button>
+            </li>
+          </ul>
+        </nav>
+        <!-- Mẫu thay thế: ẩn dữ liệu và phân trang, chỉ bỏ hidden ở một trạng thái tương ứng. -->
+        <div id="collections-empty" class="empty-state" hidden>
+          <h3>No collection runs yet</h3>
+          <p>Add a record when data is available.</p>
+        </div>
+        <div id="collections-no-results" class="no-results" hidden>
+          <h3>No matching results</h3>
+          <p>Clear the filters or try another search.</p>
+        </div>
+        <div id="collections-loading" class="loading-state" role="status" hidden>
+          <p>Loading collection runs…</p>
+        </div>
+        <div id="collections-error" class="error-state" role="alert" hidden>
+          <h3>Unable to load collection runs</h3>
+          <p>Try again when the service is available.</p>
+          <button type="button" disabled>Try again</button>
+        </div>
+      </section>
+    </main>
+    <dialog id="survey-editor" aria-labelledby="survey-editor-title">
+      <header class="dialog-header">
+        <h2 id="survey-editor-title">Add / edit survey</h2>
+        <button type="button" data-close-dialog aria-label="Close survey details editor">Close</button>
+      </header>
+      <form id="survey-form">
+        <div class="form-error-summary" role="alert" hidden>
+          <p>Review the highlighted fields before continuing.</p>
+        </div>
+        <fieldset>
+          <legend>Survey details</legend>
+          <div class="form-field">
+            <label for="survey-code">Code</label>
+            <input id="survey-code" name="survey-code" type="text" required value="SURVEY_01">
+          </div>
+          <div class="form-field">
+            <label for="survey-name">Name</label>
+            <input id="survey-name" name="survey-name" type="text" required value="Room calibration">
+          </div>
+          <div class="form-field">
+            <label for="survey-condition">Condition</label>
+            <select data-styled-dropdown id="survey-condition" name="survey-condition" >
+              <option selected>SURVEY</option>
+              <option>IMMEDIATE</option>
+              <option>BORDER</option>
+              <option>AFTER_3H</option>
+              <option>AP_MOVED</option>
+              <option>CROWDED</option>
+              <option>AP_LOST</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="survey-started">Started at (UTC+07:00)</label>
+            <input id="survey-started" name="survey-started" type="datetime-local" value="2026-10-12T09:00">
+          </div>
+          <div class="form-field">
+            <label for="survey-notes">Notes</label>
+            <textarea id="survey-notes" name="survey-notes" >
+            </textarea>
+          </div>
+        </fieldset>
+        <p id="survey-code-error" class="field-error" hidden>This survey code is already in use.</p>
+        <p class="data-note">Static preview. No changes are saved.</p>
+        <footer class="form-actions">
+          <button type="button" data-close-dialog>Cancel</button>
+          <button type="submit">Save changes</button>
+        </footer>
+      </form>
+    </dialog>
+    <dialog id="survey-action" aria-labelledby="survey-action-title" aria-describedby="survey-action-description">
+      <h2 id="survey-action-title">Change current map?</h2>
+      <p id="survey-action-description">Demo survey: SURVEY_01. This is a confirmation preview; no data is changed.</p>
+      <p class="warning">Stop active collections before finishing this survey.</p>
+      <div class="dialog-actions">
+        <button type="button" data-close-dialog>Cancel</button>
+        <button type="button" disabled title="Static preview only.">Confirm</button>
+      </div>
+    </dialog>
+    <dialog id="delete-dialog" aria-labelledby="delete-title" aria-describedby="delete-description">
+      <h2 id="delete-title">Delete survey?</h2>
+      <p id="delete-description">Review this record before deleting it.</p>
+      <dl class="record-details">
+        <dt>Record ID</dt>
+        <dd>SURVEY_01</dd>
+        <dt>Record name</dt>
+        <dd>survey preview</dd>
+        <dt>Linked-record warning</dt>
+        <dd>Linked sessions prevent deletion of this survey.</dd>
+      </dl>
+      <p class="dependency-warning">Deletion is blocked while linked records exist.</p>
+      <div class="dialog-actions">
+        <button type="button" data-close-dialog>Cancel</button>
+        <button type="button" class="danger" disabled>Delete survey</button>
+      </div>
+    </dialog>
+    <div class="toast-region" role="status" aria-live="polite" aria-atomic="true">
+      <!-- Bỏ hidden để kiểm tra mẫu thông báo. -->
+      <div class="toast" hidden>
+        <p>Changes saved.</p>
+        <button type="button" data-dismiss-feedback aria-label="Dismiss notification">Dismiss</button>
+      </div>
+    </div>
+    <div class="page-error" role="alert" hidden>
+      <p>This content could not be loaded.</p>
+      <button type="button" disabled>Try again</button>
+    </div>
+  </body>
+</html>

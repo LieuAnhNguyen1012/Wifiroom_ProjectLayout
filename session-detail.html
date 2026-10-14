@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#153e39">
+    <meta name="description" content="Inspect positioning session details and review labels.">
+    <title>Session #1234 | WiFi Room</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./theme.css">
+    <script src="./theme.js"></script>
+    <script src="./main.js" defer>
+    </script>
+  </head>
+  <body class="workspace-page">
+    <svg class="svg-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <symbol id="i-wifi" viewBox="0 0 24 24">
+          <path d="M3 8a15 15 0 0 1 18 0M6 12a10 10 0 0 1 12 0M9 16a5 5 0 0 1 6 0" />
+          <circle cx="12" cy="20" r="1" />
+        </symbol>
+      </defs>
+    </svg>
+    <header class="top-navbar">
+      <a class="skip-link" href="#main-content">Skip to main content</a>
+      <div class="nav-left">
+        <a class="brand" href="index.html" aria-label="WiFi Room dashboard">
+          <span class="brand-mark" aria-hidden="true">
+            <svg>
+              <use href="#i-wifi" />
+            </svg>
+          </span>
+          <span>WiFi Room</span>
+        </a>
+        <button class="menu-toggle" type="button" aria-controls="primary-navigation" aria-expanded="false" >Menu</button>
+        <nav id="primary-navigation" aria-label="Main navigation">
+          <ul class="menu-links">
+            <li>
+              <a href="index.html">Dashboard</a>
+            </li>
+            <li>
+              <a href="area.html">Areas &amp; APs</a>
+            </li>
+            <li>
+              <a href="survey.html">Surveys</a>
+            </li>
+            <li>
+              <a href="sessions.html" class="active" aria-current="page">Sessions</a>
+            </li>
+            <li>
+              <a href="analytics.html">Analytics</a>
+            </li>
+            <li><a href="admin.html">Admin</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="nav-right">
+        <div class="theme-control" hidden>
+          <label for="theme-mode">Appearance</label>
+          <select id="theme-mode" data-styled-dropdown aria-label="Color theme">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="system" selected>System</option>
+          </select>
+        </div>
+        <span class="demo-badge">Demo workspace</span>
+        <div class="user-info">
+          <span class="user-name">Demo Administrator</span>
+          <span class="user-role">ADMIN</span>
+        </div>
+        <a id="logout-btn" class="logout-button" href="login.html">Log out</a>
+      </div>
+    </header>
+    <main id="main-content" class="container" tabindex="-1">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <ol>
+          <li>
+            <a href="sessions.html">Sessions</a>
+          </li>
+          <li aria-current="page">Session #1234</li>
+        </ol>
+      </nav>
+      <header class="page-header">
+        <h1>Session #1234</h1>
+        <a href="sessions.html">Back to sessions</a>
+      </header>
+      <p class="data-note">
+        <span class="demo-badge">Demo data</span> Static preview. Filters, save, delete, export and collection actions do not change data.</p>
+      <section class="session-summary" aria-labelledby="summary-heading">
+        <h2 id="summary-heading">Session information</h2>
+        <dl class="record-details">
+          <dt>Tag</dt>
+          <dd>TAG-01</dd>
+          <dt>Sequence</dt>
+          <dd>1234</dd>
+          <dt>Measured at</dt>
+          <dd>
+            <time datetime="2026-10-12T10:42:00+07:00">12 Oct 2026, 10:42:00 (UTC+07:00)</time>
+          </dd>
+          <dt>Received at</dt>
+          <dd>
+            <time datetime="2026-10-12T10:42:02+07:00">12 Oct 2026, 10:42:02 (UTC+07:00)</time>
+          </dd>
+          <dt>Survey</dt>
+          <dd>SURVEY_02</dd>
+          <dt>Map survey</dt>
+          <dd>SURVEY_01</dd>
+          <dt>Condition</dt>
+          <dd>IMMEDIATE</dd>
+          <dt>Actual room</dt>
+          <dd>ROOM_1</dd>
+          <dt>Machine label</dt>
+          <dd>ROOM_2</dd>
+          <dt>Current label</dt>
+          <dd>ROOM_1</dd>
+          <dt>Label source</dt>
+          <dd>REVIEWER</dd>
+          <dt>Confidence</dt>
+          <dd>Not evaluated</dd>
+          <dt>Data source</dt>
+          <dd>SYNTHETIC</dd>
+          <dt>Included</dt>
+          <dd>Included</dd>
+        </dl>
+        <p class="mismatch-note">The machine label differs from the actual room.</p>
+      </section>
+      <section class="chart-area" aria-labelledby="signal-heading">
+        <h2 id="signal-heading">Signal comparison</h2>
+        <div class="form-field">
+          <label for="comparison-room">Comparison room</label>
+          <select data-styled-dropdown id="comparison-room" name="comparison-room" aria-describedby="comparison-hint">
+            <option selected>ROOM_1</option>
+            <option>ROOM_2</option>
+            <option>ROOM_3</option>
+            <option>ROOM_4</option>
+          </select>
+        </div>
+        <small id="comparison-hint">Static ROOM_1 fingerprint example. Changing the selection does not update the table.</small>
+        <ul class="chart-legend">
+          <li>This session</li>
+          <li>Selected room fingerprint</li>
+        </ul>
+        <figure class="chart-figure">
+          <div class="canvas-container">
+            <canvas id="rssi-chart" width="960" height="320" role="img" aria-label="Session readings and ROOM_1 fingerprint" aria-describedby="rssi-chart-summary">Use the chart data table below.</canvas>
+            <p class="chart-placeholder" aria-hidden="true">Chart preview<br>Data table available below.</p>
+          </div>
+          <figcaption id="rssi-chart-summary">Demo data. Horizontal axis: AP 1–4. Vertical axis: RSSI in dBm. Values closer to zero are stronger. −100 / Missing is not a valid signal measurement; AP 4 must be omitted from a plotted session trace. Canvas drawing is not implemented in this static preview.</figcaption>
+          <details class="chart-data">
+            <summary>View chart data</summary>
+            <div class="table-scroll" role="region" tabindex="0" aria-label="Session readings and ROOM_1 fingerprint">
+              <table class="data-table">
+                <caption>Session readings and ROOM_1 fingerprint — Demo data</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Access point</th>
+                    <th scope="col">This session (dBm)</th>
+                    <th scope="col">ROOM_1 mean (dBm)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">AP 1</th>
+                    <td>-48</td>
+                    <td>-50</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">AP 2</th>
+                    <td>-61</td>
+                    <td>-60</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">AP 3</th>
+                    <td>-72</td>
+                    <td>-70</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">AP 4</th>
+                    <td>-100 / Missing</td>
+                    <td>-80</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
+        </figure>
+        <!-- Mẫu không có fingerprint: ẩn chart-figure và bỏ hidden. -->
+        <p class="empty-state" hidden>No fingerprint available for the selected room and map.</p>
+      </section>
+      <section class="reviewer-panel" aria-labelledby="review-heading">
+        <h2 id="review-heading">Review label</h2>
+        <p>Reviewing preserves the machine result and appends a new history entry.</p>
+        <p class="data-note">ADMIN and REVIEWER can review labels. This page previews ADMIN access.</p>
+        <form id="review-form">
+          <div class="form-field">
+            <label for="review-label">Correct label</label>
+            <select data-styled-dropdown id="review-label" name="review-label" required>
+              <option selected>ROOM_1</option>
+              <option>ROOM_2</option>
+              <option>ROOM_3</option>
+              <option>ROOM_4</option>
+              <option>BORDER</option>
+              <option>AP_LOST</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="review-reason">Reason</label>
+            <textarea id="review-reason" name="review-reason" required minlength="5">Corrected to the known demo room.</textarea>
+          </div>
+          <p id="review-error" class="field-error" role="alert" hidden>Select a label and enter a reason with at least five characters.</p>
+          <button type="submit">Save reviewed label</button>
+        </form>
+        <!-- Mẫu chỉ đọc: ẩn review-form và bỏ hidden ở thông báo dưới. -->
+        <p class="empty-state" hidden>Read-only access. Only an administrator or reviewer can change the reviewed label.</p>
+      </section>
+      <section class="inclusion-panel" aria-labelledby="inclusion-heading">
+        <h2 id="inclusion-heading">Statistical inclusion</h2>
+        <!-- Mẫu VIEWER: ẩn các form exclusion/restore và hiện thông báo chỉ đọc. -->
+        <p class="role-notice empty-state" hidden>Read-only access. VIEWER cannot exclude or restore sessions. ADMIN, MAP_MANAGER, SURVEYOR and REVIEWER can change inclusion with a reason.</p>
+        <p class="inclusion-default">Included · No exclusion reason recorded.</p>
+        <form id="inclusion-form">
+          <div class="form-field">
+            <label for="inclusion-reason">Reason</label>
+            <textarea id="inclusion-reason" name="inclusion-reason" required>
+            </textarea>
+          </div>
+          <button type="submit">Exclude session</button>
+        </form>
+        <!-- Mẫu Excluded: ẩn inclusion-default và inclusion-form, bỏ hidden ở hai phần tử dưới. -->
+        <p class="inclusion-excluded" hidden>Excluded · Duplicate demo reading.</p>
+        <form id="restore-form" hidden>
+          <div class="form-field">
+            <label for="restore-reason">Reason</label>
+            <textarea id="restore-reason" name="restore-reason" required>Duplicate check completed; restore this sample.</textarea>
+          </div>
+          <button type="submit">Restore session</button>
+        </form>
+      </section>
+      <section class="label-history" aria-labelledby="history-heading">
+        <h2 id="history-heading">Label history</h2>
+        <div class="table-scroll" role="region" tabindex="0" aria-label="Label history">
+          <table class="data-table">
+            <caption>Label history — Demo data</caption>
+            <thead>
+              <tr>
+                <th scope="col">Recorded at</th>
+                <th scope="col">Label</th>
+                <th scope="col">Source</th>
+                <th scope="col">Reviewer</th>
+                <th scope="col">Reason</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">
+                  <time datetime="2026-10-12T10:42:02+07:00">12 Oct 2026, 10:42:02 (UTC+07:00)</time>
+                </th>
+                <td>ROOM_2</td>
+                <td>RULE</td>
+                <td>Not applicable</td>
+                <td>Machine result retained</td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <time datetime="2026-10-12T10:43:00+07:00">12 Oct 2026, 10:43:00 (UTC+07:00)</time>
+                </th>
+                <td>ROOM_1</td>
+                <td>REVIEWER</td>
+                <td>Demo Administrator</td>
+                <td>Corrected to the known demo room.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <nav class="pagination" aria-label="Label history pagination">
+          <p>Showing 1–2 of 2 label history</p>
+          <label for="history-page-size">Rows per page</label>
+          <select data-styled-dropdown id="history-page-size" disabled>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+          </select>
+          <ul class="page-links">
+            <li>
+              <button type="button" disabled>Previous</button>
+            </li>
+            <li>
+              <button type="button" aria-current="page" disabled>1</button>
+            </li>
+            <li>
+              <button type="button" disabled>Next</button>
+            </li>
+          </ul>
+        </nav>
+        <p class="empty-state" hidden>No label history is available.</p>
+      </section>
+      <section class="session-alerts" aria-labelledby="session-alerts-heading">
+        <h2 id="session-alerts-heading">Related alerts</h2>
+        <div class="table-scroll" role="region" tabindex="0" aria-label="Related alerts">
+          <table class="data-table">
+            <caption>Related alerts — Demo data</caption>
+            <thead>
+              <tr>
+                <th scope="col">Rule</th>
+                <th scope="col">Severity</th>
+                <th scope="col">Message</th>
+                <th scope="col">Created at</th>
+                <th scope="col">State</th>
+                <th scope="col">Resolution note</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Label mismatch</th>
+                <td>Warning</td>
+                <td>Machine label ROOM_2 differs from actual ROOM_1.</td>
+                <td>
+                  <time datetime="2026-10-12T10:42:02+07:00">12 Oct 2026, 10:42:02 (UTC+07:00)</time>
+                </td>
+                <td>Resolved</td>
+                <td>Reviewed label set to ROOM_1.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <nav class="pagination" aria-label="Related alerts pagination">
+          <p>Showing 1–1 of 1 related alerts</p>
+          <label for="related-alerts-page-size">Rows per page</label>
+          <select data-styled-dropdown id="related-alerts-page-size" disabled>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+          </select>
+          <ul class="page-links">
+            <li>
+              <button type="button" disabled>Previous</button>
+            </li>
+            <li>
+              <button type="button" aria-current="page" disabled>1</button>
+            </li>
+            <li>
+              <button type="button" disabled>Next</button>
+            </li>
+          </ul>
+        </nav>
+        <p class="empty-state" hidden>No related alerts.</p>
+      </section>
+      <!-- Mẫu not-found: ẩn các section nội dung, bỏ hidden ở khối này. -->
+      <div class="error-state" hidden>
+        <h2>Session not found</h2>
+        <p>This session is unavailable.</p>
+        <a href="sessions.html">Back to sessions</a>
+      </div>
+    </main>
+    <div class="toast-region" role="status" aria-live="polite" aria-atomic="true">
+      <!-- Bỏ hidden để kiểm tra mẫu thông báo. -->
+      <div class="toast" hidden>
+        <p>Changes saved.</p>
+        <button type="button" data-dismiss-feedback aria-label="Dismiss notification">Dismiss</button>
+      </div>
+    </div>
+    <div class="page-error" role="alert" hidden>
+      <p>This content could not be loaded.</p>
+      <button type="button" disabled>Try again</button>
+    </div>
+  </body>
+</html>

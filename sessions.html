@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#153e39">
+    <meta name="description" content="Browse and inspect positioning sessions.">
+    <title>Sessions | WiFi Room</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./theme.css">
+    <script src="./theme.js"></script>
+    <script src="./main.js" defer>
+    </script>
+  </head>
+  <body class="workspace-page">
+    <svg class="svg-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <symbol id="i-wifi" viewBox="0 0 24 24">
+          <path d="M3 8a15 15 0 0 1 18 0M6 12a10 10 0 0 1 12 0M9 16a5 5 0 0 1 6 0" />
+          <circle cx="12" cy="20" r="1" />
+        </symbol>
+      </defs>
+    </svg>
+    <header class="top-navbar">
+      <a class="skip-link" href="#main-content">Skip to main content</a>
+      <div class="nav-left">
+        <a class="brand" href="index.html" aria-label="WiFi Room dashboard">
+          <span class="brand-mark" aria-hidden="true">
+            <svg>
+              <use href="#i-wifi" />
+            </svg>
+          </span>
+          <span>WiFi Room</span>
+        </a>
+        <button class="menu-toggle" type="button" aria-controls="primary-navigation" aria-expanded="false" >Menu</button>
+        <nav id="primary-navigation" aria-label="Main navigation">
+          <ul class="menu-links">
+            <li>
+              <a href="index.html">Dashboard</a>
+            </li>
+            <li>
+              <a href="area.html">Areas &amp; APs</a>
+            </li>
+            <li>
+              <a href="survey.html">Surveys</a>
+            </li>
+            <li>
+              <a href="sessions.html" class="active" aria-current="page">Sessions</a>
+            </li>
+            <li>
+              <a href="analytics.html">Analytics</a>
+            </li>
+            <li><a href="admin.html">Admin</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="nav-right">
+        <div class="theme-control" hidden>
+          <label for="theme-mode">Appearance</label>
+          <select id="theme-mode" data-styled-dropdown aria-label="Color theme">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="system" selected>System</option>
+          </select>
+        </div>
+        <span class="demo-badge">Demo workspace</span>
+        <div class="user-info">
+          <span class="user-name">Demo Administrator</span>
+          <span class="user-role">ADMIN</span>
+        </div>
+        <a id="logout-btn" class="logout-button" href="login.html">Log out</a>
+      </div>
+    </header>
+    <main id="main-content" class="container" tabindex="-1">
+      <header class="page-header">
+        <h1>Positioning sessions</h1>
+        <div class="page-actions">
+          <button type="button" data-open-dialog="session-editor" data-editor-mode="add" data-dialog-title="Add sample session">Add sample session</button>
+          <button type="button" disabled title="Static preview; no file is exported.">Export filtered CSV</button>
+        </div>
+      </header>
+      <p class="data-note">
+        <span class="demo-badge">Demo data</span> Static preview. Filters, save, delete, export and collection actions do not change data.</p>
+      <!-- Mẫu MAP_MANAGER/SURVEYOR: chỉ sửa readings; không thêm/xóa phiên mẫu. REVIEWER/VIEWER chỉ xem và xuất dữ liệu. -->
+      <p class="role-notice empty-state" hidden>Only ADMIN can add or delete sample sessions. ADMIN, MAP_MANAGER and SURVEYOR can edit readings. All roles can read and export records.</p>
+      <section class="filter-bar" aria-labelledby="filters-heading">
+        <h2 id="filters-heading">Filter sessions</h2>
+        <form id="session-filters">
+          <fieldset>
+            <legend>Session filters</legend>
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="session-query">Search</label>
+                <input id="session-query" name="session-query" type="text" >
+              </div>
+              <div class="form-field">
+                <label for="session-tag">Tag</label>
+                <select data-styled-dropdown id="session-tag" name="session-tag" >
+                  <option>All</option>
+                  <option>TAG-01</option>
+                  <option>TAG-02</option>
+                  <option>TAG-03</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="session-survey">Survey</label>
+                <select data-styled-dropdown id="session-survey" name="session-survey" >
+                  <option>All</option>
+                  <option>SURVEY_01</option>
+                  <option>SURVEY_02</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="session-label">Current label</label>
+                <select data-styled-dropdown id="session-label" name="session-label" >
+                  <option>All</option>
+                  <option>ROOM_1</option>
+                  <option>ROOM_2</option>
+                  <option>ROOM_3</option>
+                  <option>ROOM_4</option>
+                  <option>BORDER</option>
+                  <option>AP_LOST</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="session-label-source">Label source</label>
+                <select data-styled-dropdown id="session-label-source" name="session-label-source" >
+                  <option>All</option>
+                  <option>RULE</option>
+                  <option>REVIEWER</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="session-actual-room">Actual room</label>
+                <select data-styled-dropdown id="session-actual-room" name="session-actual-room" >
+                  <option>All</option>
+                  <option>ROOM_1</option>
+                  <option>ROOM_2</option>
+                  <option>ROOM_3</option>
+                  <option>ROOM_4</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="session-source">Data source</label>
+                <select id="session-source" name="session-source" data-styled-dropdown>
+                  <option>All</option>
+                  <option>DEVICE</option>
+                  <option>SYNTHETIC</option>
+                  <option>UCI</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="session-condition">Condition</label>
+                <select data-styled-dropdown id="session-condition" name="session-condition" >
+                  <option>All</option>
+                  <option>SURVEY</option>
+                  <option>IMMEDIATE</option>
+                  <option>BORDER</option>
+                  <option>AFTER_3H</option>
+                  <option>AP_MOVED</option>
+                  <option>CROWDED</option>
+                  <option>AP_LOST</option>
+                  <option>LIVE</option>
+                  <option>UCI</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="session-inclusion">Inclusion</label>
+                <select data-styled-dropdown id="session-inclusion" name="session-inclusion" >
+                  <option>All</option>
+                  <option>Included</option>
+                  <option>Excluded</option>
+                </select>
+              </div>
+              <div class="checkbox-field">
+                <input id="session-mismatch" name="session-mismatch" type="checkbox" >
+                <label for="session-mismatch">Only mismatches</label>
+              </div>
+            </div>
+          </fieldset>
+          <p class="field-error" role="alert" hidden>Select a valid survey and data source.</p>
+          <div class="form-actions">
+            <button type="submit">Apply filters</button>
+            <button type="reset">Clear filters</button>
+          </div>
+        </form>
+      </section>
+      <section class="session-data" aria-labelledby="sessions-heading">
+        <header class="section-header">
+          <h2 id="sessions-heading">Session results</h2>
+          <p>1 sample result · All filters</p>
+        </header>
+        <p class="data-note">RSSI is in dBm. Confidence is a percentage when evaluated. The sample row remains unchanged when filters are edited.</p>
+        <div class="table-scroll" role="region" tabindex="0" aria-label="Filtered positioning sessions">
+          <table class="data-table">
+            <caption>Filtered positioning sessions — Demo data</caption>
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Tag</th>
+                <th scope="col">Measured at</th>
+                <th scope="col">RSSI 1 (dBm)</th>
+                <th scope="col">RSSI 2 (dBm)</th>
+                <th scope="col">RSSI 3 (dBm)</th>
+                <th scope="col">RSSI 4 (dBm)</th>
+                <th scope="col">Confidence (%)</th>
+                <th scope="col">Actual room</th>
+                <th scope="col">Machine label</th>
+                <th scope="col">Current label</th>
+                <th scope="col">Label source</th>
+                <th scope="col">Data source</th>
+                <th scope="col">Included</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">
+                  <a href="session-detail.html">#1234</a>
+                </th>
+                <td>TAG-01</td>
+                <td>
+                  <time datetime="2026-10-12T10:42:00+07:00">12 Oct 2026, 10:42:00 (UTC+07:00)</time>
+                </td>
+                <td>-48</td>
+                <td>-61</td>
+                <td>-72</td>
+                <td>-100 / Missing</td>
+                <td>Not evaluated</td>
+                <td>ROOM_1</td>
+                <td>ROOM_2</td>
+                <td>ROOM_1</td>
+                <td>REVIEWER</td>
+                <td>SYNTHETIC</td>
+                <td>
+                  <span class="status-badge">Included</span>
+                </td>
+                <td>
+                  <div class="session-actions">
+                  <a href="session-detail.html">View details</a>
+                  <button type="button" data-open-dialog="session-editor" data-dialog-title="Edit session #1234" data-preview-values="{&quot;sample-tag&quot;:&quot;TAG-01&quot;,&quot;sample-room&quot;:&quot;ROOM_1&quot;,&quot;sample-survey&quot;:&quot;SURVEY_02&quot;,&quot;sample-map&quot;:&quot;SURVEY_01&quot;,&quot;sample-condition&quot;:&quot;IMMEDIATE&quot;}" aria-label="Edit session 1234">Edit</button>
+                  <button type="button" class="danger" data-open-dialog="delete-dialog" data-record="#1234" data-record-name="TAG-01 sample" data-record-kind="session" aria-label="Delete session 1234">Delete</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <nav class="pagination" aria-label="Sessions pagination">
+          <p>Showing 1–1 of 1 sessions</p>
+          <label for="sessions-page-size">Rows per page</label>
+          <select data-styled-dropdown id="sessions-page-size" disabled>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+          </select>
+          <ul class="page-links">
+            <li>
+              <button type="button" disabled>Previous</button>
+            </li>
+            <li>
+              <button type="button" aria-current="page" disabled>1</button>
+            </li>
+            <li>
+              <button type="button" disabled>Next</button>
+            </li>
+          </ul>
+        </nav>
+        <!-- Mẫu thay thế: ẩn dữ liệu và phân trang, chỉ bỏ hidden ở một trạng thái tương ứng. -->
+        <div id="sessions-empty" class="empty-state" hidden>
+          <h3>No sessions yet</h3>
+          <p>Add a record when data is available.</p>
+        </div>
+        <div id="sessions-no-results" class="no-results" hidden>
+          <h3>No matching results</h3>
+          <p>Clear the filters or try another search.</p>
+        </div>
+        <div id="sessions-loading" class="loading-state" role="status" hidden>
+          <p>Loading sessions…</p>
+        </div>
+        <div id="sessions-error" class="error-state" role="alert" hidden>
+          <h3>Unable to load sessions</h3>
+          <p>Try again when the service is available.</p>
+          <button type="button" disabled>Try again</button>
+        </div>
+        <p class="empty-state" hidden>No exportable rows. Export is unavailable until the filtered result contains records.</p>
+      </section>
+      <p class="data-note">New manual sessions are sample data, not device measurements.</p>
+    </main>
+    <dialog id="session-editor" aria-labelledby="session-editor-title">
+      <header class="dialog-header">
+        <h2 id="session-editor-title">Add / edit sample session</h2>
+        <button type="button" data-close-dialog aria-label="Close session readings editor">Close</button>
+      </header>
+      <form id="session-form">
+        <div class="form-error-summary" role="alert" hidden>
+          <p>Review the highlighted fields before continuing.</p>
+        </div>
+        <fieldset>
+          <legend>Session readings</legend>
+          <div class="form-field">
+            <label for="sample-tag">Tag</label>
+            <select data-styled-dropdown id="sample-tag" name="sample-tag" >
+              <option selected>TAG-01</option>
+              <option>TAG-02</option>
+              <option>TAG-03</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="sample-rssi-1">RSSI 1 (dBm)</label>
+            <input id="sample-rssi-1" name="sample-rssi-1" type="number" required min="-100" max="-1" step="1" value="-48" aria-describedby="sample-rssi-1-hint">
+            <small id="sample-rssi-1-hint">−100 represents a missing signal.</small>
+          </div>
+          <div class="form-field">
+            <label for="sample-rssi-2">RSSI 2 (dBm)</label>
+            <input id="sample-rssi-2" name="sample-rssi-2" type="number" required min="-100" max="-1" step="1" value="-61" aria-describedby="sample-rssi-2-hint">
+            <small id="sample-rssi-2-hint">−100 represents a missing signal.</small>
+          </div>
+          <div class="form-field">
+            <label for="sample-rssi-3">RSSI 3 (dBm)</label>
+            <input id="sample-rssi-3" name="sample-rssi-3" type="number" required min="-100" max="-1" step="1" value="-72" aria-describedby="sample-rssi-3-hint">
+            <small id="sample-rssi-3-hint">−100 represents a missing signal.</small>
+          </div>
+          <div class="form-field">
+            <label for="sample-rssi-4">RSSI 4 (dBm)</label>
+            <input id="sample-rssi-4" name="sample-rssi-4" type="number" required min="-100" max="-1" step="1" value="-100" aria-describedby="sample-rssi-4-hint">
+            <small id="sample-rssi-4-hint">−100 represents a missing signal.</small>
+          </div>
+          <div class="form-field">
+            <label for="sample-room">Actual room</label>
+            <select data-styled-dropdown id="sample-room" name="sample-room" >
+              <option>Unknown</option>
+              <option selected>ROOM_1</option>
+              <option>ROOM_2</option>
+              <option>ROOM_3</option>
+              <option>ROOM_4</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="sample-survey">Survey</label>
+            <select data-styled-dropdown id="sample-survey" name="sample-survey" >
+              <option>SURVEY_01</option>
+              <option>SURVEY_02</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="sample-map">Map survey</label>
+            <select data-styled-dropdown id="sample-map" name="sample-map" >
+              <option>SURVEY_01</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="sample-condition">Condition</label>
+            <select data-styled-dropdown id="sample-condition" name="sample-condition" >
+              <option>SURVEY</option>
+              <option selected>IMMEDIATE</option>
+              <option>BORDER</option>
+              <option>AFTER_3H</option>
+              <option>AP_MOVED</option>
+              <option>CROWDED</option>
+              <option>AP_LOST</option>
+              <option>LIVE</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="sample-reason">Reason</label>
+            <textarea id="sample-reason" name="sample-reason" required minlength="5">Illustrative manual session for layout review.</textarea>
+          </div>
+        </fieldset>
+        <p class="data-note">−100 represents a missing signal. New records are marked SYNTHETIC.</p>
+        <p id="sample-rssi-error" class="field-error" hidden>Enter all four RSSI values between −100 and −1 dBm.</p>
+        <p class="data-note">Static preview. No changes are saved.</p>
+        <footer class="form-actions">
+          <button type="button" data-close-dialog>Cancel</button>
+          <button type="submit">Save changes</button>
+        </footer>
+      </form>
+    </dialog>
+    <dialog id="delete-dialog" aria-labelledby="delete-title" aria-describedby="delete-description">
+      <h2 id="delete-title">Delete session?</h2>
+      <p id="delete-description">Review this record before deleting it.</p>
+      <dl class="record-details">
+        <dt>Record ID</dt>
+        <dd>#1234</dd>
+        <dt>Record name</dt>
+        <dd>session preview</dd>
+        <dt>Linked-record warning</dt>
+        <dd>This session has linked label history and alerts. Review those references before deletion.</dd>
+      </dl>
+      <p class="dependency-warning">Deletion is blocked while linked records exist.</p>
+      <div class="dialog-actions">
+        <button type="button" data-close-dialog>Cancel</button>
+        <button type="button" class="danger" disabled>Delete session</button>
+      </div>
+    </dialog>
+    <div class="toast-region" role="status" aria-live="polite" aria-atomic="true">
+      <!-- Bỏ hidden để kiểm tra mẫu thông báo. -->
+      <div class="toast" hidden>
+        <p>Changes saved.</p>
+        <button type="button" data-dismiss-feedback aria-label="Dismiss notification">Dismiss</button>
+      </div>
+    </div>
+    <div class="page-error" role="alert" hidden>
+      <p>This content could not be loaded.</p>
+      <button type="button" disabled>Try again</button>
+    </div>
+  </body>
+</html>
